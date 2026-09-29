@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="description" content="Proof of concept: an intelligent property concierge for Go London Apartments and Go City Apartments.">
+<title>Go Apartments AI Property Concierge (POC)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap">
+<style>*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.13 | MIT License | https://tailwindcss.com*/*,:after,:before{border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:Instrument Sans,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]{display:none}*,:after,:before{box-sizing:border-box}body{--tw-bg-opacity:1;background-color:rgb(var(--paper)/var(--tw-bg-opacity));font-family:Instrument Sans,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}body,h1,h2,h3{--tw-text-opacity:1;color:rgb(var(--ink)/var(--tw-text-opacity))}h1,h2,h3{font-family:Libre Caslon Display,Libre Caslon Text,Georgia,serif;font-weight:400;letter-spacing:-.01em}img,svg{max-width:100%}:focus-visible{outline:2px solid rgb(var(--brass));outline-offset:2px;border-radius:4px}#view:focus{outline:none}::-moz-selection{background:rgb(var(--brass-soft))}::selection{background:rgb(var(--brass-soft))}.page{margin-left:auto;margin-right:auto;width:100%;max-width:1240px;padding-left:1.25rem;padding-right:1.25rem}@media (min-width:640px){.page{padding-left:2rem;padding-right:2rem}}.prose-serif{font-family:Libre Caslon Text,Georgia,serif;font-size:17px;line-height:1.75;--tw-text-opacity:1;color:rgb(var(--ink-soft)/var(--tw-text-opacity))}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.inset-x-0{left:0;right:0}.-bottom-6{bottom:-1.5rem}.-top-4{top:-1rem}.bottom-0{bottom:0}.left-3{left:.75rem}.left-4{left:1rem}.left-\[16\.6\%\]{left:16.6%}.right-2{right:.5rem}.right-4{right:1rem}.right-\[16\.6\%\]{right:16.6%}.top-2{top:.5rem}.top-28{top:7rem}.top-3{top:.75rem}.z-30{z-index:30}.z-40{z-index:40}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:.25rem}.mb-3{margin-bottom:.75rem}.ml-2{margin-left:.5rem}.ml-3{margin-left:.75rem}.ml-auto{margin-left:auto}.mr-2{margin-right:.5rem}.mt-1{margin-top:.25rem}.mt-1\.5{margin-top:.375rem}.mt-10{margin-top:2.5rem}.mt-12{margin-top:3rem}.mt-14{margin-top:3.5rem}.mt-16{margin-top:4rem}.mt-2{margin-top:.5rem}.mt-24{margin-top:6rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.mt-9{margin-top:2.25rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.aspect-\[16\/10\]{aspect-ratio:16/10}.aspect-\[3\/2\]{aspect-ratio:3/2}.aspect-\[4\/3\]{aspect-ratio:4/3}.aspect-\[4\/5\]{aspect-ratio:4/5}.aspect-square{aspect-ratio:1/1}.h-1\.5{height:.375rem}.h-10{height:2.5rem}.h-11{height:2.75rem}.h-14{height:3.5rem}.h-16{height:4rem}.h-24{height:6rem}.h-3{height:.75rem}.h-3\.5{height:.875rem}.h-36{height:9rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-9{height:2.25rem}.h-\[172px\]{height:172px}.h-\[72px\]{height:72px}.h-auto{height:auto}.h-full{height:100%}.h-px{height:1px}.max-h-32{max-height:8rem}.max-h-\[440px\]{max-height:440px}.max-h-full{max-height:100%}.min-h-\[28px\]{min-height:28px}.min-h-\[70vh\]{min-height:70vh}.w-1\.5{width:.375rem}.w-10{width:2.5rem}.w-20{width:5rem}.w-24{width:6rem}.w-3{width:.75rem}.w-3\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-7{width:1.75rem}.w-8{width:2rem}.w-\[172px\]{width:172px}.w-\[190px\]{width:190px}.w-fit{width:-moz-fit-content;width:fit-content}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\[260px\]{min-width:260px}.min-w-\[720px\]{min-width:720px}.min-w-\[860px\]{min-width:860px}.max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.max-w-\[14ch\]{max-width:14ch}.max-w-\[20ch\]{max-width:20ch}.max-w-\[22ch\]{max-width:22ch}.max-w-\[34ch\]{max-width:34ch}.max-w-\[38ch\]{max-width:38ch}.max-w-\[46ch\]{max-width:46ch}.max-w-\[48ch\]{max-width:48ch}.max-w-\[520px\]{max-width:520px}.max-w-\[52ch\]{max-width:52ch}.max-w-\[60ch\]{max-width:60ch}.max-w-\[62ch\]{max-width:62ch}.max-w-\[64ch\]{max-width:64ch}.max-w-\[66ch\]{max-width:66ch}.max-w-\[68ch\]{max-width:68ch}.max-w-\[70ch\]{max-width:70ch}.max-w-\[80ch\]{max-width:80ch}.max-w-\[85\%\]{max-width:85%}.max-w-full{max-width:100%}.max-w-md{max-width:28rem}.max-w-sm{max-width:24rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.border-collapse{border-collapse:collapse}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize-none{resize:none}.scroll-mt-24{scroll-margin-top:6rem}.scroll-mt-28{scroll-margin-top:7rem}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-cols-7{grid-template-columns:repeat(7,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\.5{gap:.375rem}.gap-10{gap:2.5rem}.gap-12{gap:3rem}.gap-2{gap:.5rem}.gap-2\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-px{gap:1px}.gap-x-3{-moz-column-gap:.75rem;column-gap:.75rem}.gap-x-4{-moz-column-gap:1rem;column-gap:1rem}.gap-x-5{-moz-column-gap:1.25rem;column-gap:1.25rem}.gap-x-6{-moz-column-gap:1.5rem;column-gap:1.5rem}.gap-x-8{-moz-column-gap:2rem;column-gap:2rem}.gap-y-1{row-gap:.25rem}.gap-y-12{row-gap:3rem}.gap-y-2\.5{row-gap:.625rem}.gap-y-3\.5{row-gap:.875rem}.gap-y-5{row-gap:1.25rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-10>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2.5rem*var(--tw-space-y-reverse))}.space-y-16>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(4rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(4rem*var(--tw-space-y-reverse))}.space-y-2>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.5rem*var(--tw-space-y-reverse))}.space-y-2\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.625rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.625rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.space-y-6>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem*var(--tw-space-y-reverse))}.divide-y>:not([hidden])~:not([hidden]){--tw-divide-y-reverse:0;border-top-width:calc(1px*(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px*var(--tw-divide-y-reverse))}.divide-stone-line>:not([hidden])~:not([hidden]){--tw-divide-opacity:1;border-color:rgb(var(--stone-line)/var(--tw-divide-opacity))}.self-center{align-self:center}.overflow-auto{overflow:auto}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis}.truncate,.whitespace-nowrap{white-space:nowrap}.rounded{border-radius:.25rem}.rounded-card{border-radius:10px}.rounded-control{border-radius:6px}.rounded-full{border-radius:9999px}.rounded-plate{border-radius:3px}.rounded-sm{border-radius:.125rem}.border{border-width:1px}.border-y{border-top-width:1px}.border-b,.border-y{border-bottom-width:1px}.border-b-2{border-bottom-width:2px}.border-l{border-left-width:1px}.border-t{border-top-width:1px}.border-t-2{border-top-width:2px}.border-dashed{border-style:dashed}.border-\[\#C9A46A\]{--tw-border-opacity:1;border-color:rgb(201 164 106/var(--tw-border-opacity))}.border-brass\/40{border-color:rgb(var(--brass)/.4)}.border-door{--tw-border-opacity:1;border-color:rgb(var(--door)/var(--tw-border-opacity))}.border-door\/25{border-color:rgb(var(--door)/.25)}.border-door\/40{border-color:rgb(var(--door)/.4)}.border-ink{--tw-border-opacity:1;border-color:rgb(var(--ink)/var(--tw-border-opacity))}.border-ink\/15{border-color:rgb(var(--ink)/.15)}.border-ink\/20{border-color:rgb(var(--ink)/.2)}.border-ink\/25{border-color:rgb(var(--ink)/.25)}.border-ink\/30{border-color:rgb(var(--ink)/.3)}.border-ink\/40{border-color:rgb(var(--ink)/.4)}.border-stone-line{--tw-border-opacity:1;border-color:rgb(var(--stone-line)/var(--tw-border-opacity))}.border-transparent{border-color:transparent}.border-white\/15{border-color:hsla(0,0%,100%,.15)}.border-white\/20{border-color:hsla(0,0%,100%,.2)}.border-white\/25{border-color:hsla(0,0%,100%,.25)}.bg-\[\#101314\]\/95{background-color:rgba(16,19,20,.95)}.bg-\[\#15191A\]{--tw-bg-opacity:1;background-color:rgb(21 25 26/var(--tw-bg-opacity))}.bg-\[\#1A1D1F\]{--tw-bg-opacity:1;background-color:rgb(26 29 31/var(--tw-bg-opacity))}.bg-\[\#A9844C\]{--tw-bg-opacity:1;background-color:rgb(169 132 76/var(--tw-bg-opacity))}.bg-\[\#FFFFFF\]{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity))}.bg-black\/40{background-color:rgba(0,0,0,.4)}.bg-black\/45{background-color:rgba(0,0,0,.45)}.bg-brass{--tw-bg-opacity:1;background-color:rgb(var(--brass)/var(--tw-bg-opacity))}.bg-brass-soft{--tw-bg-opacity:1;background-color:rgb(var(--brass-soft)/var(--tw-bg-opacity))}.bg-brick{--tw-bg-opacity:1;background-color:rgb(var(--brick)/var(--tw-bg-opacity))}.bg-brick-tint{--tw-bg-opacity:1;background-color:rgb(var(--brick-tint)/var(--tw-bg-opacity))}.bg-door{--tw-bg-opacity:1;background-color:rgb(var(--door)/var(--tw-bg-opacity))}.bg-door-tint{--tw-bg-opacity:1;background-color:rgb(var(--door-tint)/var(--tw-bg-opacity))}.bg-ink\/20{background-color:rgb(var(--ink)/.2)}.bg-paper{--tw-bg-opacity:1;background-color:rgb(var(--paper)/var(--tw-bg-opacity))}.bg-paper\/95{background-color:rgb(var(--paper)/.95)}.bg-stone{--tw-bg-opacity:1;background-color:rgb(var(--stone)/var(--tw-bg-opacity))}.bg-stone-deep{--tw-bg-opacity:1;background-color:rgb(var(--stone-deep)/var(--tw-bg-opacity))}.bg-stone-line{--tw-bg-opacity:1;background-color:rgb(var(--stone-line)/var(--tw-bg-opacity))}.bg-stone\/60{background-color:rgb(var(--stone)/.6)}.bg-transparent{background-color:transparent}.bg-white\/90{background-color:hsla(0,0%,100%,.9)}.fill-brass{fill:rgb(var(--brass)/1)}.fill-stone{fill:rgb(var(--stone)/1)}.stroke-door{stroke:rgb(var(--door)/1)}.stroke-stone-deep{stroke:rgb(var(--stone-deep)/1)}.object-contain{-o-object-fit:contain;object-fit:contain}.object-cover{-o-object-fit:cover;object-fit:cover}.p-1{padding:.25rem}.p-1\.5{padding:.375rem}.p-2{padding:.5rem}.p-3{padding:.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.p-7{padding:1.75rem}.p-8{padding:2rem}.px-0{padding-left:0;padding-right:0}.px-1\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-3\.5{padding-left:.875rem;padding-right:.875rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-7{padding-left:1.75rem;padding-right:1.75rem}.py-0\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-2\.5{padding-top:.625rem;padding-bottom:.625rem}.py-20{padding-top:5rem;padding-bottom:5rem}.py-24{padding-top:6rem;padding-bottom:6rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-5{padding-top:1.25rem;padding-bottom:1.25rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.pb-1{padding-bottom:.25rem}.pb-10{padding-bottom:2.5rem}.pb-2{padding-bottom:.5rem}.pb-2\.5{padding-bottom:.625rem}.pb-20{padding-bottom:5rem}.pb-3{padding-bottom:.75rem}.pb-5{padding-bottom:1.25rem}.pb-6{padding-bottom:1.5rem}.pl-3{padding-left:.75rem}.pl-4{padding-left:1rem}.pr-1{padding-right:.25rem}.pr-3{padding-right:.75rem}.pr-5{padding-right:1.25rem}.pt-10{padding-top:2.5rem}.pt-12{padding-top:3rem}.pt-4{padding-top:1rem}.pt-5{padding-top:1.25rem}.pt-6{padding-top:1.5rem}.pt-8{padding-top:2rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.align-top{vertical-align:top}.align-middle{vertical-align:middle}.font-display{font-family:Libre Caslon Display,Libre Caslon Text,Georgia,serif}.font-sans{font-family:Instrument Sans,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}.font-serif{font-family:Libre Caslon Text,Georgia,serif}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-\[11px\]{font-size:11px}.text-\[12\.5px\]{font-size:12.5px}.text-\[12px\]{font-size:12px}.text-\[13px\]{font-size:13px}.text-\[14px\]{font-size:14px}.text-\[15px\]{font-size:15px}.text-\[16px\]{font-size:16px}.text-\[17px\]{font-size:17px}.text-\[22px\]{font-size:22px}.text-\[24px\]{font-size:24px}.text-\[26px\]{font-size:26px}.text-\[28px\]{font-size:28px}.text-\[30px\]{font-size:30px}.text-\[32px\]{font-size:32px}.text-\[34px\]{font-size:34px}.text-\[36px\]{font-size:36px}.text-\[40px\]{font-size:40px}.text-\[44px\]{font-size:44px}.text-\[52px\]{font-size:52px}.text-\[88px\]{font-size:88px}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.italic{font-style:italic}.tabular-nums{--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction)}.leading-\[1\.02\]{line-height:1.02}.leading-\[1\.05\]{line-height:1.05}.leading-none{line-height:1}.leading-relaxed{line-height:1.625}.leading-snug{line-height:1.375}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-.025em}.text-\[\#1A1D1F\]{--tw-text-opacity:1;color:rgb(26 29 31/var(--tw-text-opacity))}.text-\[\#1E3B34\]{--tw-text-opacity:1;color:rgb(30 59 52/var(--tw-text-opacity))}.text-\[\#E8E6E0\]{--tw-text-opacity:1;color:rgb(232 230 224/var(--tw-text-opacity))}.text-\[\#EFE5D3\]{--tw-text-opacity:1;color:rgb(239 229 211/var(--tw-text-opacity))}.text-brass{--tw-text-opacity:1;color:rgb(var(--brass)/var(--tw-text-opacity))}.text-brass-deep{--tw-text-opacity:1;color:rgb(var(--brass-deep)/var(--tw-text-opacity))}.text-brick{--tw-text-opacity:1;color:rgb(var(--brick)/var(--tw-text-opacity))}.text-door{--tw-text-opacity:1;color:rgb(var(--door)/var(--tw-text-opacity))}.text-ink{--tw-text-opacity:1;color:rgb(var(--ink)/var(--tw-text-opacity))}.text-ink-muted{--tw-text-opacity:1;color:rgb(var(--ink-muted)/var(--tw-text-opacity))}.text-ink-soft{--tw-text-opacity:1;color:rgb(var(--ink-soft)/var(--tw-text-opacity))}.text-ink\/20{color:rgb(var(--ink)/.2)}.text-ink\/25{color:rgb(var(--ink)/.25)}.text-ink\/30{color:rgb(var(--ink)/.3)}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity))}.text-white\/70{color:hsla(0,0%,100%,.7)}.text-white\/75{color:hsla(0,0%,100%,.75)}.text-white\/80{color:hsla(0,0%,100%,.8)}.text-white\/85{color:hsla(0,0%,100%,.85)}.underline{text-decoration-line:underline}.line-through{text-decoration-line:line-through}.decoration-brass{text-decoration-color:rgb(var(--brass)/1)}.decoration-2{text-decoration-thickness:2px}.underline-offset-4{text-underline-offset:4px}.underline-offset-\[10px\]{text-underline-offset:10px}.opacity-50{opacity:.5}.opacity-70{opacity:.7}.shadow-lift{--tw-shadow:0 1px 2px rgba(0,0,0,.06),0 8px 24px -12px rgba(0,0,0,.22);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color),0 8px 24px -12px var(--tw-shadow-color)}.shadow-lift,.shadow-panel{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-panel{--tw-shadow:0 24px 60px -24px rgba(0,0,0,.45);--tw-shadow-colored:0 24px 60px -24px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur{--tw-backdrop-blur:blur(8px);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}:root{--paper:255 255 255;--stone:241 239 234;--stone-deep:228 224 216;--stone-line:217 212 202;--ink:26 29 31;--ink-soft:58 63 66;--ink-muted:98 105 109;--door:30 59 52;--door-hover:23 48 42;--door-tint:227 234 230;--brass:169 132 76;--brass-soft:239 229 211;--brass-deep:125 95 49;--brick:154 75 51;--brick-tint:245 230 224;color-scheme:light}@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--paper:22 26 27;--stone:30 34 35;--stone-deep:44 49 50;--stone-line:58 64 65;--ink:236 233 227;--ink-soft:208 205 199;--ink-muted:160 164 162;--door:60 116 101;--door-hover:72 132 116;--door-tint:34 54 48;--brass:196 160 106;--brass-soft:58 49 34;--brass-deep:226 196 144;--brick:226 136 110;--brick-tint:66 38 31;color-scheme:dark}}:root[data-theme=dark]{--paper:22 26 27;--stone:30 34 35;--stone-deep:44 49 50;--stone-line:58 64 65;--ink:236 233 227;--ink-soft:208 205 199;--ink-muted:160 164 162;--door:60 116 101;--door-hover:72 132 116;--door-tint:34 54 48;--brass:196 160 106;--brass-soft:58 49 34;--brass-deep:226 196 144;--brick:226 136 110;--brick-tint:66 38 31;color-scheme:dark}:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0);padding-bottom:env(safe-area-inset-bottom,0)}html{scroll-padding-top:calc(env(safe-area-inset-top, 0px) + 88px);-webkit-text-size-adjust:100%}.site-header{position:sticky;top:env(safe-area-inset-top,0)}.safe-bottom,.safe-y{padding-bottom:env(safe-area-inset-bottom,0)}.safe-y{padding-top:env(safe-area-inset-top,0)}.launch-low{bottom:calc(1.25rem + env(safe-area-inset-bottom, 0px))}.launch-high{bottom:calc(5.5rem + env(safe-area-inset-bottom, 0px))}.map-park{fill:rgb(var(--door)/.14)}.map-park-t{fill:rgb(var(--door));fill-opacity:.75;font-family:Instrument Sans,sans-serif}.map-river{stroke:#b9cdd3}@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .map-river{stroke:#34525a}}:root[data-theme=dark] .map-river{stroke:#34525a}.map-label{fill:rgb(var(--ink-muted));font-family:Libre Caslon Text,Georgia,serif}.map-pin{fill:rgb(var(--paper))}.map-pin,.map-pin-hot{stroke:rgb(var(--door))}.map-dot,.map-pin-hot{fill:rgb(var(--door))}.map-dot-hot{fill:rgb(var(--brass))}.map-num{fill:rgb(var(--door))}.map-num,.map-num-hot{font-family:Instrument Sans,sans-serif}.map-num-hot{fill:#fff}.map-callout{fill:rgb(var(--ink));stroke:rgb(var(--stone));font-family:Instrument Sans,sans-serif}@keyframes rise{0%{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.animate-rise{animation:rise .32s ease-out both}@keyframes slidein{0%{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}.animate-slidein{animation:slidein .26s ease-out both}@media (prefers-reduced-motion:reduce){*,:after,:before{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}.placeholder\:text-ink-muted\/70::-moz-placeholder{color:rgb(var(--ink-muted)/.7)}.placeholder\:text-ink-muted\/70::placeholder{color:rgb(var(--ink-muted)/.7)}.focus-within\:border-door:focus-within{--tw-border-opacity:1;border-color:rgb(var(--door)/var(--tw-border-opacity))}.hover\:border-\[\#EFE5D3\]:hover{--tw-border-opacity:1;border-color:rgb(239 229 211/var(--tw-border-opacity))}.hover\:border-door:hover{--tw-border-opacity:1;border-color:rgb(var(--door)/var(--tw-border-opacity))}.hover\:border-ink\/40:hover{border-color:rgb(var(--ink)/.4)}.hover\:border-ink\/50:hover{border-color:rgb(var(--ink)/.5)}.hover\:bg-door-hover:hover{--tw-bg-opacity:1;background-color:rgb(var(--door-hover)/var(--tw-bg-opacity))}.hover\:bg-door-tint:hover{--tw-bg-opacity:1;background-color:rgb(var(--door-tint)/var(--tw-bg-opacity))}.hover\:bg-stone:hover{--tw-bg-opacity:1;background-color:rgb(var(--stone)/var(--tw-bg-opacity))}.hover\:bg-stone-deep:hover{--tw-bg-opacity:1;background-color:rgb(var(--stone-deep)/var(--tw-bg-opacity))}.hover\:bg-white:hover{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity))}.hover\:bg-white\/10:hover{background-color:hsla(0,0%,100%,.1)}.hover\:bg-white\/5:hover{background-color:hsla(0,0%,100%,.05)}.hover\:text-door:hover{--tw-text-opacity:1;color:rgb(var(--door)/var(--tw-text-opacity))}.hover\:text-ink:hover{--tw-text-opacity:1;color:rgb(var(--ink)/var(--tw-text-opacity))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity))}.hover\:underline:hover{text-decoration-line:underline}.focus\:not-sr-only:focus{position:static;width:auto;height:auto;padding:0;margin:0;overflow:visible;clip:auto;white-space:normal}.focus\:fixed:focus{position:fixed}.focus\:left-4:focus{left:1rem}.focus\:top-4:focus{top:1rem}.focus\:z-\[60\]:focus{z-index:60}.focus\:rounded-control:focus{border-radius:6px}.focus\:bg-paper:focus{--tw-bg-opacity:1;background-color:rgb(var(--paper)/var(--tw-bg-opacity))}.focus\:px-4:focus{padding-left:1rem;padding-right:1rem}.focus\:py-2:focus{padding-top:.5rem;padding-bottom:.5rem}.focus\:shadow-lift:focus{--tw-shadow:0 1px 2px rgba(0,0,0,.06),0 8px 24px -12px rgba(0,0,0,.22);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color),0 8px 24px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.disabled\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\:opacity-30:disabled{opacity:.3}.disabled\:opacity-40:disabled{opacity:.4}.disabled\:opacity-50:disabled{opacity:.5}.group:hover .group-hover\:text-door{--tw-text-opacity:1;color:rgb(var(--door)/var(--tw-text-opacity))}@media (min-width:640px){.sm\:left-auto{left:auto}.sm\:right-6{right:1.5rem}.sm\:right-\[-12px\]{right:-12px}.sm\:col-span-2{grid-column:span 2/span 2}.sm\:row-span-2{grid-row:span 2/span 2}.sm\:block{display:block}.sm\:inline-flex{display:inline-flex}.sm\:aspect-auto{aspect-ratio:auto}.sm\:h-28{height:7rem}.sm\:min-h-\[460px\]{min-height:460px}.sm\:w-28{width:7rem}.sm\:w-72{width:18rem}.sm\:w-auto{width:auto}.sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.sm\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.sm\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.sm\:grid-rows-2{grid-template-rows:repeat(2,minmax(0,1fr))}.sm\:flex-row{flex-direction:row}.sm\:items-center{align-items:center}.sm\:p-2\.5{padding:.625rem}.sm\:p-6{padding:1.5rem}.sm\:p-7{padding:1.75rem}.sm\:p-8{padding:2rem}.sm\:py-16{padding-top:4rem;padding-bottom:4rem}.sm\:py-20{padding-top:5rem;padding-bottom:5rem}.sm\:py-24{padding-top:6rem}.sm\:pb-24,.sm\:py-24{padding-bottom:6rem}.sm\:text-\[28px\]{font-size:28px}.sm\:text-\[40px\]{font-size:40px}.sm\:text-\[44px\]{font-size:44px}.sm\:text-\[48px\]{font-size:48px}.sm\:text-\[52px\]{font-size:52px}.sm\:text-\[56px\]{font-size:56px}.sm\:text-\[64px\]{font-size:64px}.sm\:text-lg{font-size:1.125rem;line-height:1.75rem}}@media (min-width:768px){.md\:aspect-auto{aspect-ratio:auto}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.md\:grid-cols-5{grid-template-columns:repeat(5,minmax(0,1fr))}.md\:grid-cols-\[1\.4fr_1fr_1fr_1fr\]{grid-template-columns:1.4fr 1fr 1fr 1fr}.md\:grid-cols-\[1fr_1\.6fr\]{grid-template-columns:1fr 1.6fr}.md\:grid-cols-\[auto_1fr\]{grid-template-columns:auto 1fr}.md\:grid-cols-\[minmax\(0\2c 300px\)_1fr\]{grid-template-columns:minmax(0,300px) 1fr}.md\:items-center{align-items:center}.md\:gap-8{gap:2rem}}@media (min-width:1024px){.lg\:sticky{position:sticky}.lg\:top-28{top:7rem}.lg\:block{display:block}.lg\:hidden{display:none}.lg\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.lg\:grid-cols-5{grid-template-columns:repeat(5,minmax(0,1fr))}.lg\:grid-cols-\[0\.8fr_1\.2fr\]{grid-template-columns:.8fr 1.2fr}.lg\:grid-cols-\[0\.9fr_1\.1fr\]{grid-template-columns:.9fr 1.1fr}.lg\:grid-cols-\[1\.15fr_0\.85fr\]{grid-template-columns:1.15fr .85fr}.lg\:grid-cols-\[1\.1fr_2fr\]{grid-template-columns:1.1fr 2fr}.lg\:grid-cols-\[minmax\(0\2c 1fr\)_380px\]{grid-template-columns:minmax(0,1fr) 380px}.lg\:grid-cols-\[minmax\(0\2c 1fr\)_400px\]{grid-template-columns:minmax(0,1fr) 400px}.lg\:items-end{align-items:flex-end}.lg\:items-center{align-items:center}.lg\:gap-14{gap:3.5rem}.lg\:gap-16{gap:4rem}.lg\:py-20{padding-top:5rem;padding-bottom:5rem}.lg\:text-\[76px\]{font-size:76px}}@media (min-width:1280px){.xl\:inline{display:inline}}</style>
+</head>
+<body>
+<a href="#view" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-control focus:bg-paper focus:px-4 focus:py-2 focus:shadow-lift">Skip to content</a>
+<div class="bg-[#1A1D1F] text-[13px] text-white/85">
+  <div class="page flex flex-wrap items-center justify-between gap-x-6 gap-y-1 py-2">
+    <p><span class="mr-2 rounded-plate bg-[#A9844C] px-1.5 py-0.5 font-semibold text-white">POC DEMO</span>Demo properties, demo availability and simulated recommendations. Nothing here is live.</p>
+    <nav aria-label="Demo views" class="flex flex-wrap gap-x-4 gap-y-1">
+      <a href="#/" class="hover:text-white">Guest site</a>
+      <a href="#/admin" class="hover:text-white">Property Intelligence</a>
+      <a href="#/readiness" class="hover:text-white">AI Readiness</a>
+      <a href="#/platform" class="hover:text-white">Future platform</a>
+    </nav>
+  </div>
+</div>
+<header id="header" class="site-header z-40 border-b border-stone-line bg-paper/95 backdrop-blur"></header>
+<main id="view" tabindex="-1"><div class="page py-24 text-ink-muted">Loading apartments…</div></main>
+<footer id="contact" class="mt-24 bg-door text-white/85">
+  <div class="page grid gap-10 py-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <div><p class="font-display text-3xl text-white">Go Apartments</p>
+      <p class="mt-3 max-w-sm text-[15px] leading-relaxed">Serviced apartments across London for business trips, family visits and relocations. Go London Apartments and Go City Apartments.</p></div>
+    <div><p class="font-medium text-white">Stay</p><ul class="mt-3 space-y-2 text-[15px]">
+      <li><a href="#/apartments" class="hover:text-white">All apartments</a></li><li><a href="#/locations" class="hover:text-white">Locations</a></li><li><a href="#/compare" class="hover:text-white">Compare apartments</a></li></ul></div>
+    <div><p class="font-medium text-white">Speak to our team</p><ul class="mt-3 space-y-2 text-[15px]"><li>Reservations team (demo)</li><li>reservations@example.com</li><li>Corporate &amp; relocation enquiries</li></ul></div>
+    <div><p class="font-medium text-white">This prototype</p><ul class="mt-3 space-y-2 text-[15px]">
+      <li><a href="#/admin" class="hover:text-white">Property Intelligence</a></li><li><a href="#/readiness" class="hover:text-white">AI &amp; Search Readiness</a></li><li><a href="#/platform" class="hover:text-white">Future platform</a></li></ul></div>
+  </div>
+  <div class="border-t border-white/15"><p class="page py-5 text-[13px] text-white/70">Proof of concept. Property details, illustrations, rates, ratings and availability are demo content, not live inventory.</p></div>
+</footer>
+<div id="tray"></div><div id="launcher"></div><div id="concierge"></div><div id="overlay"></div>
+<script>(()=>{var v=e=>`https://images.unsplash.com/${e}?auto=format&fit=crop&w=1600&q=75`,x={livingA:v("photo-1522708323590-d24dbb6b0267"),livingB:v("photo-1502672260266-1c1ef2d93688"),livingC:v("photo-1560448204-e02f11c3d0e2"),livingD:v("photo-1586023492125-27b2c045efd7"),livingE:v("photo-1493809842364-78817add7ffb"),livingF:v("photo-1513694203232-719a280e022f"),bedroomA:v("photo-1505691938895-1758d7feb511"),bedroomB:v("photo-1522771739844-6a9f6d5f14af"),bedroomC:v("photo-1540518614846-7eded433c457"),kitchenA:v("photo-1484154218962-a197022b5858"),kitchenB:v("photo-1556911220-bff31c812dba"),bathA:v("photo-1552321554-5fefe8c9ef14"),workA:v("photo-1497366216548-37526070297c"),exteriorA:v("photo-1513635269975-59663e0ac1ad")},xt=[{id:"gla-196-bishopsgate",slug:"196-bishopsgate",name:"196 Bishopsgate",brand:"Go London Apartments",status:"active",location:"Liverpool Street",zone:"City & Shoreditch",isCentral:!0,address:"196 Bishopsgate, London",postcode:"EC2M 4NR",latitude:51.5186,longitude:-.0797,locationTags:["liverpool street","bishopsgate","city of london","the city","spitalfields","shoreditch","moorgate","bank","aldgate"],bedrooms:2,bathrooms:2,sleeps:4,sizeSqFt:850,propertyType:"Apartment",headline:"Two-bedroom City apartment, a short walk from Liverpool Street",description:"A calm, fully serviced two-bedroom apartment on Bishopsgate, moments from Liverpool Street station and the City's financial district. Two double bedrooms with en-suite bathrooms, a dedicated work desk and a fully equipped kitchen make it well suited to project teams, visiting executives and families who want to be in the centre of things.",amenities:["Fast Wi-Fi","Dedicated workspace","Fully equipped kitchen","Washer-dryer","Lift","Smart TV","Air conditioning","Weekly housekeeping","24/7 guest support","Iron & ironing board"],suitableFor:["Business","Leisure","Relocation","Family"],nearbyTransport:[{name:"Liverpool Street",mode:"Elizabeth line",walkMinutes:3},{name:"Liverpool Street",mode:"Tube",walkMinutes:3},{name:"Aldgate",mode:"Tube",walkMinutes:8},{name:"Shoreditch High Street",mode:"Overground",walkMinutes:7}],nearbyAttractions:["Spitalfields Market","Brick Lane","Leadenhall Market","Tower of London"],businessDistricts:["City of London","Broadgate","Tech City (Shoreditch)"],minimumStay:3,checkIn:"15:00",checkOut:"11:00",priceFrom:320,currency:"GBP",images:[x.livingA,x.bedroomA,x.kitchenA,x.workA,x.bathA],features:["Two en-suite bedrooms","Three minutes to the Elizabeth line","Work desk with ergonomic chair","Corporate invoicing available"],rating:4.8,reviewCount:126,lastUpdated:"2026-09-22"},{id:"gca-artillery-lane",slug:"artillery-lane-spitalfields",name:"Artillery Lane Residence",brand:"Go City Apartments",status:"active",location:"Spitalfields",zone:"City & Shoreditch",isCentral:!0,address:"Artillery Lane, Spitalfields, London",postcode:"E1 7LP",latitude:51.5178,longitude:-.0769,locationTags:["spitalfields","liverpool street","shoreditch","brick lane","city of london","the city","aldgate"],bedrooms:1,bathrooms:1,sleeps:2,sizeSqFt:520,propertyType:"Apartment",headline:"One-bedroom apartment on a Georgian lane in Spitalfields",description:"A one-bedroom apartment tucked into one of Spitalfields' oldest lanes, five minutes on foot from Liverpool Street. Ideal for solo business travellers and couples who want the City on the doorstep and the markets, restaurants and galleries of East London around the corner.",amenities:["Fast Wi-Fi","Dedicated workspace","Fully equipped kitchen","Washer-dryer","Smart TV","Weekly housekeeping","24/7 guest support"],suitableFor:["Business","Leisure"],nearbyTransport:[{name:"Liverpool Street",mode:"Elizabeth line",walkMinutes:5},{name:"Aldgate East",mode:"Tube",walkMinutes:6}],nearbyAttractions:["Spitalfields Market","Brick Lane","Whitechapel Gallery"],businessDistricts:["City of London","Broadgate"],minimumStay:2,checkIn:"15:00",checkOut:"11:00",priceFrom:195,currency:"GBP",images:[x.livingB,x.bedroomB,x.kitchenB],features:["Period building","Five minutes to Liverpool Street","Quiet lane setting"],rating:4.7,reviewCount:88,lastUpdated:"2026-09-18"},{id:"gla-bayswater-park",slug:"bayswater-park-residence",name:"Bayswater Park Residence",brand:"Go London Apartments",status:"active",location:"Bayswater",zone:"Hyde Park & Kensington",isCentral:!0,address:"Westbourne Terrace, Bayswater, London",postcode:"W2 3UL",latitude:51.5134,longitude:-.1795,locationTags:["bayswater","hyde park","lancaster gate","paddington","kensington gardens","notting hill","west london"],bedrooms:2,bathrooms:2,sleeps:5,sizeSqFt:920,propertyType:"Apartment",headline:"Two-bedroom family apartment, four minutes from Hyde Park",description:"A bright two-bedroom apartment in a white stucco terrace between Paddington and Hyde Park. The second bedroom has twin beds and there is a sofa bed in the living room, so families of four or five have room to spread out. Travel cot and high chair available on request.",amenities:["Fast Wi-Fi","Fully equipped kitchen","Washer-dryer","Lift","Smart TV","Travel cot on request","High chair on request","Weekly housekeeping","24/7 guest support","Dishwasher"],suitableFor:["Family","Leisure","Groups"],nearbyTransport:[{name:"Lancaster Gate",mode:"Tube",walkMinutes:4},{name:"Paddington",mode:"Elizabeth line",walkMinutes:7},{name:"Paddington (Heathrow Express)",mode:"Rail",walkMinutes:7}],nearbyAttractions:["Hyde Park","Kensington Gardens","Diana Memorial Playground","Notting Hill"],businessDistricts:["Paddington Basin"],minimumStay:3,checkIn:"15:00",checkOut:"11:00",priceFrom:290,currency:"GBP",images:[x.livingC,x.bedroomC,x.kitchenA,x.bathA],features:["Four minutes to Hyde Park","Family kit on request","Heathrow Express from Paddington"],rating:4.9,reviewCount:142,lastUpdated:"2026-09-24"},{id:"gla-kensington-gardens-mews",slug:"kensington-gardens-mews",name:"Kensington Gardens Mews",brand:"Go London Apartments",status:"active",location:"Kensington",zone:"Hyde Park & Kensington",isCentral:!0,address:"Queensway, Kensington, London",postcode:"W2 4QH",latitude:51.5105,longitude:-.1875,locationTags:["kensington","hyde park","kensington gardens","queensway","bayswater","notting hill","west london"],bedrooms:3,bathrooms:2,sleeps:6,sizeSqFt:1250,propertyType:"Townhouse apartment",headline:"Three-bedroom mews home beside Kensington Gardens",description:"A three-bedroom duplex in a quiet mews off Queensway, a short stroll to Kensington Gardens and Hyde Park. A large kitchen-diner, two bathrooms and generous storage make it a comfortable base for larger families, groups and households relocating to London.",amenities:["Fast Wi-Fi","Fully equipped kitchen","Washer-dryer","Dishwasher","Smart TV","Private terrace","Travel cot on request","Dedicated workspace","Weekly housekeeping","24/7 guest support"],suitableFor:["Family","Groups","Relocation","Leisure"],nearbyTransport:[{name:"Queensway",mode:"Tube",walkMinutes:3},{name:"Bayswater",mode:"Tube",walkMinutes:5}],nearbyAttractions:["Kensington Gardens","Hyde Park","Kensington Palace","Portobello Road"],businessDistricts:["Paddington Basin","Kensington High Street"],minimumStay:5,checkIn:"15:00",checkOut:"10:00",priceFrom:450,currency:"GBP",images:[x.livingD,x.bedroomA,x.kitchenB,x.bathA],features:["Private terrace","Duplex layout","Three minutes to Kensington Gardens"],rating:4.8,reviewCount:64,lastUpdated:"2026-09-10"},{id:"gca-canary-wharf-riverside",slug:"canary-wharf-riverside",name:"Canary Wharf Riverside",brand:"Go City Apartments",status:"active",location:"Canary Wharf",zone:"Docklands",isCentral:!1,address:"Westferry Road, Canary Wharf, London",postcode:"E14 8JH",latitude:51.5036,longitude:-.0263,locationTags:["canary wharf","docklands","isle of dogs","westferry","heron quays"],bedrooms:1,bathrooms:1,sleeps:2,sizeSqFt:580,propertyType:"Apartment",headline:"One-bedroom river-view apartment for Canary Wharf stays",description:"A one-bedroom apartment with river views, a short walk from Canary Wharf's offices. Designed for weekday corporate stays and consultants on long projects, with a proper work desk, residents' gym and concierge.",amenities:["Fast Wi-Fi","Dedicated workspace","Fully equipped kitchen","Washer-dryer","Lift","Gym","Concierge","Smart TV","Air conditioning","Weekly housekeeping","24/7 guest support"],suitableFor:["Business","Relocation"],nearbyTransport:[{name:"Canary Wharf",mode:"Elizabeth line",walkMinutes:8},{name:"Heron Quays",mode:"DLR",walkMinutes:6},{name:"Canary Wharf",mode:"Tube",walkMinutes:9}],nearbyAttractions:["Thames Path","Museum of London Docklands","Crossrail Place Roof Garden"],businessDistricts:["Canary Wharf"],minimumStay:5,checkIn:"15:00",checkOut:"11:00",priceFrom:210,currency:"GBP",images:[x.livingE,x.bedroomB,x.workA],features:["River views","Residents' gym","Concierge desk"],rating:4.6,reviewCount:97,lastUpdated:"2026-09-15"},{id:"gca-westferry-executive",slug:"westferry-executive-canary-wharf",name:"Westferry Executive Apartment",brand:"Go City Apartments",status:"active",location:"Canary Wharf",zone:"Docklands",isCentral:!1,address:"Westferry Circus, Canary Wharf, London",postcode:"E14 8RR",latitude:51.5058,longitude:-.0275,locationTags:["canary wharf","docklands","westferry","isle of dogs"],bedrooms:2,bathrooms:2,sleeps:4,sizeSqFt:900,propertyType:"Apartment",headline:"Two-bedroom executive apartment for longer corporate stays",description:"A two-bedroom, two-bathroom apartment at Westferry Circus with a separate study nook and 24-hour concierge. Popular with relocating professionals and corporate teams on assignments of a week or more.",amenities:["Fast Wi-Fi","Dedicated workspace","Fully equipped kitchen","Washer-dryer","Dishwasher","Lift","Gym","Concierge","Parking on request","Air conditioning","Weekly housekeeping","24/7 guest support"],suitableFor:["Business","Relocation","Family"],nearbyTransport:[{name:"Canary Wharf",mode:"Elizabeth line",walkMinutes:7},{name:"Westferry",mode:"DLR",walkMinutes:6}],nearbyAttractions:["Thames Path","Canada Square Park"],businessDistricts:["Canary Wharf"],minimumStay:7,checkIn:"15:00",checkOut:"11:00",priceFrom:280,currency:"GBP",images:[x.livingF,x.bedroomC,x.kitchenA,x.workA],features:["Separate study nook","24-hour concierge","Parking on request","Monthly rates available"],rating:4.7,reviewCount:51,lastUpdated:"2026-08-29"},{id:"gla-covent-garden-loft",slug:"covent-garden-loft",name:"Covent Garden Loft",brand:"Go London Apartments",status:"active",location:"Covent Garden",zone:"West End",isCentral:!0,address:"Long Acre, Covent Garden, London",postcode:"WC2E 9LH",latitude:51.5129,longitude:-.1244,locationTags:["covent garden","west end","soho","leicester square","holborn","strand","theatreland","trafalgar square"],bedrooms:1,bathrooms:1,sleeps:3,sizeSqFt:610,propertyType:"Loft",headline:"One-bedroom loft in the heart of Theatreland",description:"A characterful top-floor loft with exposed beams above Long Acre, steps from Covent Garden piazza and the West End's theatres. A double bedroom plus a sofa bed makes it a good fit for couples and small groups on a city break.",amenities:["Fast Wi-Fi","Fully equipped kitchen","Washer-dryer","Smart TV","Weekly housekeeping","24/7 guest support"],suitableFor:["Leisure","Business"],nearbyTransport:[{name:"Covent Garden",mode:"Tube",walkMinutes:2},{name:"Leicester Square",mode:"Tube",walkMinutes:5},{name:"Tottenham Court Road",mode:"Elizabeth line",walkMinutes:9}],nearbyAttractions:["Covent Garden Piazza","Royal Opera House","National Gallery","Soho"],businessDistricts:["Holborn","Midtown"],minimumStay:2,checkIn:"15:00",checkOut:"11:00",priceFrom:260,currency:"GBP",images:[x.livingB,x.bedroomA,x.kitchenB],features:["Exposed-beam loft","Two minutes to Covent Garden","Top floor"],rating:4.7,reviewCount:173,lastUpdated:"2026-09-20"},{id:"gla-marylebone-townhouse",slug:"marylebone-townhouse",name:"Marylebone Townhouse Apartment",brand:"Go London Apartments",status:"active",location:"Marylebone",zone:"King's Cross & Marylebone",isCentral:!0,address:"Seymour Place, Marylebone, London",postcode:"W1H 5TN",latitude:51.5176,longitude:-.1626,locationTags:["marylebone","marble arch","hyde park","baker street","oxford street","regent's park","west end","edgware road"],bedrooms:3,bathrooms:2,sleeps:6,sizeSqFt:1180,propertyType:"Townhouse apartment",headline:"Three-bedroom townhouse apartment between Hyde Park and Oxford Street",description:"A spacious three-bedroom apartment across the first and second floors of a Georgian townhouse, a few minutes from Marble Arch and Hyde Park. Ideal for families and groups who want space, a proper kitchen and easy walks to Oxford Street and Regent's Park.",amenities:["Fast Wi-Fi","Fully equipped kitchen","Washer-dryer","Dishwasher","Smart TV","Travel cot on request","High chair on request","Dedicated workspace","Weekly housekeeping","24/7 guest support"],suitableFor:["Family","Groups","Leisure","Relocation"],nearbyTransport:[{name:"Marble Arch",mode:"Tube",walkMinutes:6},{name:"Edgware Road",mode:"Tube",walkMinutes:5},{name:"Bond Street",mode:"Elizabeth line",walkMinutes:11}],nearbyAttractions:["Hyde Park","Oxford Street","Regent's Park","Wallace Collection"],businessDistricts:["Marylebone","Paddington Basin"],minimumStay:4,checkIn:"15:00",checkOut:"10:00",priceFrom:480,currency:"GBP",images:[x.livingD,x.bedroomC,x.kitchenA,x.bathA],features:["Georgian townhouse","Six minutes to Hyde Park","Two bathrooms"],rating:4.9,reviewCount:79,lastUpdated:"2026-09-25"},{id:"gca-south-bank-studio",slug:"south-bank-studio",name:"South Bank Studio",brand:"Go City Apartments",status:"active",location:"Waterloo",zone:"South Bank",isCentral:!0,address:"Waterloo Road, South Bank, London",postcode:"SE1 8UG",latitude:51.5031,longitude:-.1102,locationTags:["south bank","waterloo","southwark","london eye","westminster"],bedrooms:0,bathrooms:1,sleeps:2,sizeSqFt:380,propertyType:"Studio",headline:"Compact studio a short walk from the South Bank",description:"A well-designed studio a few minutes from Waterloo and the riverside. Good value for short city breaks and solo business trips.",amenities:["Fast Wi-Fi","Kitchenette","Smart TV","24/7 guest support"],suitableFor:["Leisure","Business"],nearbyTransport:[{name:"Waterloo",mode:"Tube",walkMinutes:4},{name:"Waterloo",mode:"Rail",walkMinutes:4}],nearbyAttractions:["London Eye","Southbank Centre","Borough Market"],businessDistricts:["South Bank","Westminster"],minimumStay:2,checkIn:"15:00",checkOut:"11:00",priceFrom:165,currency:"GBP",images:[x.livingE],features:["Four minutes to Waterloo"],rating:4.5,reviewCount:58,lastUpdated:"2026-06-14"},{id:"gca-kings-cross-residence",slug:"kings-cross-residence",name:"King's Cross Residence",brand:"Go City Apartments",status:"active",location:"King's Cross",zone:"King's Cross & Marylebone",isCentral:!0,address:"Pentonville Road, King's Cross, London",postcode:"N1 9JP",latitude:51.5316,longitude:-.1195,locationTags:["king's cross","kings cross","st pancras","euston","islington","granary square"],bedrooms:2,bathrooms:1,sleeps:4,sizeSqFt:780,propertyType:"Apartment",headline:"Two-bedroom apartment beside King's Cross St Pancras",description:"A two-bedroom apartment with a study corner, minutes from King's Cross St Pancras and the Eurostar. A practical choice for relocations, month-long assignments and teams visiting the Knowledge Quarter.",amenities:["Fast Wi-Fi","Dedicated workspace","Fully equipped kitchen","Washer-dryer","Dishwasher","Lift","Smart TV","Weekly housekeeping","24/7 guest support"],suitableFor:["Business","Relocation"],nearbyTransport:[{name:"King's Cross St Pancras",mode:"Tube",walkMinutes:5},{name:"St Pancras International (Eurostar)",mode:"Rail",walkMinutes:7}],nearbyAttractions:["Granary Square","Coal Drops Yard","British Library"],businessDistricts:["King's Cross","Knowledge Quarter"],minimumStay:7,checkIn:"15:00",checkOut:"11:00",currency:"GBP",images:[x.livingC,x.bedroomB,x.kitchenB],features:["Seven minutes to Eurostar","Study corner","Monthly rates available"],rating:4.6,reviewCount:42,lastUpdated:"2026-07-30"},{id:"gca-shoreditch-warehouse",slug:"shoreditch-warehouse",name:"Shoreditch Warehouse Apartment",brand:"Go City Apartments",status:"active",location:"Shoreditch",zone:"City & Shoreditch",isCentral:!0,address:"Curtain Road, Shoreditch, London",postcode:"EC2A 3BX",locationTags:["shoreditch","old street","liverpool street","hoxton","tech city","the city"],bedrooms:2,bathrooms:2,sleeps:5,sizeSqFt:980,propertyType:"Loft",headline:"Two-bedroom warehouse conversion in Shoreditch",description:"An open-plan warehouse conversion with high ceilings and big windows on Curtain Road, ten minutes' walk from Liverpool Street. Two bedrooms and a sofa bed suit groups of friends and creative teams.",amenities:["Fast Wi-Fi","Fully equipped kitchen","Washer-dryer","Smart TV","Dedicated workspace","24/7 guest support"],suitableFor:["Groups","Leisure","Business"],nearbyTransport:[{name:"Shoreditch High Street",mode:"Overground",walkMinutes:5},{name:"Old Street",mode:"Tube",walkMinutes:7},{name:"Liverpool Street",mode:"Elizabeth line",walkMinutes:10}],nearbyAttractions:["Boxpark","Columbia Road Flower Market","Brick Lane"],businessDistricts:["Tech City (Shoreditch)","City of London"],minimumStay:3,checkIn:"15:00",checkOut:"11:00",priceFrom:250,currency:"GBP",images:[x.livingF,x.bedroomA],features:["Warehouse conversion","High ceilings"],rating:4.6,reviewCount:66,lastUpdated:"2026-08-02"},{id:"gla-paddington-basin",slug:"paddington-basin",name:"Paddington Basin Apartment",brand:"Go London Apartments",status:"draft",location:"Paddington",zone:"Hyde Park & Kensington",isCentral:!0,address:"Merchant Square, Paddington, London",postcode:"W2 1AN",latitude:51.5189,longitude:-.1741,locationTags:["paddington","hyde park","bayswater","little venice","marble arch"],bedrooms:1,bathrooms:1,sleeps:2,propertyType:"Apartment",headline:"One-bedroom canal-side apartment for monthly stays",description:"Canal-side one-bedroom apartment. Monthly stays.",amenities:["Fast Wi-Fi","Fully equipped kitchen","Washer-dryer","Lift"],suitableFor:["Relocation","Business"],nearbyTransport:[{name:"Paddington",mode:"Elizabeth line",walkMinutes:4}],nearbyAttractions:["Little Venice","Hyde Park"],businessDistricts:["Paddington Basin"],minimumStay:28,checkIn:"15:00",checkOut:"11:00",priceFrom:175,currency:"GBP",images:[x.livingA],features:["Monthly stays"],lastUpdated:"2026-05-03"}],ar=x.exteriorA,rr=x.livingA;async function ht(){return xt}async function gt(){return ht()}async function R(){return(await ht()).filter(e=>e.status==="active")}async function bt(e){return(await R()).find(t=>t.slug===e)}async function yt(e,t=3){return(await R()).filter(r=>r.id!==e.id).map(r=>({p:r,s:(r.zone===e.zone?3:0)+(r.bedrooms===e.bedrooms?2:0)+r.suitableFor.filter(o=>e.suitableFor.includes(o)).length})).sort((r,o)=>o.s-r.s).slice(0,t).map(r=>r.p)}var wt=[{label:"Liverpool Street",aliases:["liverpool street","liverpool st","bishopsgate","broadgate"],tags:["liverpool street","bishopsgate"],zone:"City & Shoreditch"},{label:"City of London",aliases:["city of london","the city","financial district","bank","moorgate","square mile"],tags:["city of london","the city","bank","moorgate"],zone:"City & Shoreditch"},{label:"Shoreditch",aliases:["shoreditch","old street","hoxton","tech city"],tags:["shoreditch","old street","hoxton","tech city"],zone:"City & Shoreditch"},{label:"Spitalfields",aliases:["spitalfields","brick lane","aldgate"],tags:["spitalfields","brick lane","aldgate"],zone:"City & Shoreditch"},{label:"Hyde Park",aliases:["hyde park","marble arch","lancaster gate","kensington gardens"],tags:["hyde park","kensington gardens","lancaster gate","marble arch"],zone:"Hyde Park & Kensington"},{label:"Kensington",aliases:["kensington","queensway","notting hill","south kensington"],tags:["kensington","queensway","notting hill"],zone:"Hyde Park & Kensington"},{label:"Bayswater & Paddington",aliases:["bayswater","paddington","little venice","heathrow express"],tags:["bayswater","paddington","little venice"],zone:"Hyde Park & Kensington"},{label:"Canary Wharf",aliases:["canary wharf","docklands","isle of dogs","e14"],tags:["canary wharf","docklands","isle of dogs"],zone:"Docklands"},{label:"Covent Garden & West End",aliases:["covent garden","west end","soho","theatre","theatreland","leicester square","trafalgar"],tags:["covent garden","west end","soho","leicester square","theatreland"],zone:"West End"},{label:"Marylebone",aliases:["marylebone","baker street","regent's park","regents park","oxford street"],tags:["marylebone","baker street","regent's park","oxford street"],zone:"King's Cross & Marylebone"},{label:"King's Cross",aliases:["king's cross","kings cross","st pancras","eurostar","euston","islington"],tags:["king's cross","kings cross","st pancras","euston"],zone:"King's Cross & Marylebone"},{label:"South Bank",aliases:["south bank","southbank","waterloo","london eye","southwark"],tags:["south bank","waterloo","london eye","southwark"],zone:"South Bank"}],kt=["central london","centre of london","center of london","central","zone 1","heart of london"],vt=[{label:"The City & Liverpool Street",zone:"City & Shoreditch",query:"Apartment near Liverpool Street",blurb:"For finance, law and consulting stays, with the Elizabeth line on the doorstep."},{label:"Hyde Park & Kensington",zone:"Hyde Park & Kensington",query:"Family apartment near Hyde Park",blurb:"Stucco terraces, green space and museums. A favourite with families."},{label:"Canary Wharf",zone:"Docklands",query:"Corporate stay near Canary Wharf",blurb:"Riverside apartments with gyms and concierge, minutes from the towers."},{label:"Covent Garden & West End",zone:"West End",query:"Apartment near Covent Garden for a city break",blurb:"Theatres, galleries and restaurants within a few minutes' walk."},{label:"King's Cross & Marylebone",zone:"King's Cross & Marylebone",query:"Apartment near King's Cross for relocation",blurb:"Eurostar links, the Knowledge Quarter and quiet Georgian streets."},{label:"South Bank",zone:"South Bank",query:"Studio near Waterloo",blurb:"Riverside culture and good-value studios for short breaks."}];var _t={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,fourteen:14,a:1,an:1,single:1,couple:2};function W(e){let t=e.toLowerCase();return/^\d+$/.test(t)?parseInt(t,10):_t[t]}var j="(\\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fourteen|a|an)",Ct="(\\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fourteen)",Yt=[["Relocation",["relocation","relocating","relocate","moving to london","long-term","long term","monthly","month-long","new job","between homes"]],["Business",["business","corporate","work trip","working","meeting","conference","client","office","consultant","project team","executive"]],["Family",["family","kids","children","child","toddler","baby","parents"]],["Groups",["group","friends","team of","hen","stag","reunion"]],["Leisure",["holiday","leisure","city break","sightseeing","weekend","vacation","theatre","shopping","honeymoon"]]],Qt=[["Dedicated workspace",["desk","workspace","work space","work from","study"]],["Fast Wi-Fi",["wifi","wi-fi","internet","broadband"]],["Gym",["gym","fitness"]],["Parking on request",["parking","car park","drive"]],["Lift",["lift","elevator","step-free","accessible"]],["Washer-dryer",["washing machine","washer","laundry"]],["Air conditioning",["air con","air-con","air conditioning","aircon"]],["Concierge",["concierge"]],["Private terrace",["terrace","balcony","outdoor space"]],["Travel cot on request",["cot","crib","baby"]]],$t={Business:["Fast Wi-Fi","Dedicated workspace","Air conditioning","Weekly housekeeping"],Family:["Fully equipped kitchen","Washer-dryer"],Relocation:["Fully equipped kitchen","Washer-dryer","Dedicated workspace","Dishwasher"],Groups:["Fully equipped kitchen"],Leisure:[]};function V(e){let t=` ${e.toLowerCase().replace(/[–—]/g,"-").replace(/\s+/g," ")} `,a={rawQuery:e.trim(),amenities:[]},r;for(let m of wt)for(let b of m.aliases){let k=t.indexOf(b);k>=0&&(!r||k<r.idx)&&(r={label:m.label,tags:m.tags,zone:m.zone,idx:k})}let o=kt.some(m=>t.includes(m));r?a.location={label:r.label,tags:r.tags,zone:r.zone,centralOnly:o||void 0}:o&&(a.location={label:"Central London",tags:[],centralOnly:!0}),/\bstudio\b/.test(t)&&(a.bedrooms=0,a.propertyType="Studio");let s=t.match(new RegExp(`\\b${j}[\\s-]*(?:bed|beds|bedroom|bedrooms|br|bdr)\\b`));if(s){let m=W(s[1]);m!==void 0&&(a.bedrooms=m)}let l=[new RegExp(`\\b(?:for|sleeps|sleep|accommodate|group of|party of|family of|team of)\\s+${Ct}\\b(?!\\s*-?\\s*(?:night|nights|week|weeks|month|months|bed|bedroom|bedrooms))`),new RegExp(`\\b${Ct}\\s+(?:people|persons|guests|adults|of us|colleagues|travellers|travelers)\\b`)];for(let m of l){let b=t.match(m);if(b){let k=W(b[1]);if(k!==void 0&&k>0&&k<20){a.guests=k;break}}}!a.guests&&/\bcouple\b/.test(t)&&(a.guests=2),!a.guests&&/\b(solo|just me|on my own|myself)\b/.test(t)&&(a.guests=1);let n=t.match(new RegExp(`\\b${j}\\s+adults?\\b`)),d=t.match(new RegExp(`\\b${j}\\s+(?:children|kids|child)\\b`));if(n&&d){let m=W(n[1])??0,b=W(d[1])??0;m+b>0&&(a.guests=m+b)}let u=t.match(new RegExp(`\\b${j}[\\s-]*(night|nights|day|days|week|weeks|month|months)\\b`));if(u){let m=W(u[1]),b=u[2];m!==void 0&&(a.nights=b.startsWith("week")?m*7:b.startsWith("month")?m*30:m)}else/\b(weekend)\b/.test(t)?a.nights=2:/\b(a week|one week)\b/.test(t)&&(a.nights=7);for(let[m,b]of Yt)if(b.some(k=>t.includes(k))){a.purpose=m;break}/\bfamily\b/.test(t)&&a.purpose!=="Relocation"&&(a.purpose="Family");for(let[m,b]of Qt)b.some(k=>t.includes(k))&&!a.amenities.includes(m)&&a.amenities.push(m);let h=[["Loft",/\bloft\b/],["Penthouse",/\bpenthouse\b/],["Townhouse apartment",/\btownhouse|mews\b/]];for(let[m,b]of h)b.test(t)&&(a.propertyType=m);return a}function N(e){let t=[];return e.location&&t.push({key:"location",label:"Location",value:e.location.centralOnly&&e.location.label!=="Central London"?`Central London, ${e.location.label}`:e.location.label}),e.bedrooms!==void 0&&t.push({key:"bedrooms",label:"Bedrooms",value:e.bedrooms===0?"Studio":String(e.bedrooms)}),e.guests&&t.push({key:"guests",label:"Guests",value:String(e.guests)}),e.purpose&&t.push({key:"purpose",label:"Purpose",value:e.purpose}),e.nights&&t.push({key:"stay",label:"Stay",value:`${e.nights} night${e.nights===1?"":"s"}`}),e.propertyType&&e.propertyType!=="Studio"&&t.push({key:"type",label:"Type",value:e.propertyType}),e.amenities.length&&t.push({key:"amenities",label:"Must have",value:e.amenities.join(", ")}),t}var q={Location:.3,Capacity:.2,Bedrooms:.15,Purpose:.15,Amenities:.1,Stay:.1},E=.8;function Zt(e,t,a){let r=[t.toLowerCase(),...a];return e.nearbyTransport.filter(o=>r.some(s=>o.name.toLowerCase().includes(s))).sort((o,s)=>o.walkMinutes-s.walkMinutes)[0]}function Jt(e,t){let a={factor:"Location",weight:q.Location};if(!t.location)return{...a,score:E,specified:!1,note:"No location given"};let{label:r,tags:o,zone:s,centralOnly:l}=t.location;if(o.length===0&&l)return e.isCentral?{...a,score:.95,specified:!0,note:"Central London",reason:`Central London location in ${e.location}`}:{...a,score:.25,specified:!0,note:"Outside central London",caution:`${e.location} is outside central London`};if(o.find(d=>e.locationTags.includes(d))){let d=Zt(e,r,o),h=e.location.toLowerCase()===r.toLowerCase()?1:d?d.walkMinutes<=5?.97:d.walkMinutes<=8?.92:.85:.85,m=d?`${d.walkMinutes} min walk to ${d.name} (${d.mode})`:`Near ${r}`;return{...a,score:h,specified:!0,note:`Near ${r}`,reason:m}}return s&&e.zone===s?{...a,score:.6,specified:!0,note:`Same area (${s})`,reason:`In the ${s} area, close to ${r}`}:l&&e.isCentral?{...a,score:.45,specified:!0,note:"Central, different area",caution:`In ${e.location} rather than ${r}`}:{...a,score:.1,specified:!0,note:`Not near ${r}`,caution:`Located in ${e.location}, not near ${r}`}}function ea(e,t){let a={factor:"Capacity",weight:q.Capacity};if(!t.guests)return{...a,score:E,specified:!1,note:`Sleeps ${e.sleeps}`};if(e.sleeps<t.guests)return{...a,score:0,specified:!0,note:`Sleeps ${e.sleeps}`,caution:`Sleeps ${e.sleeps}, fewer than your ${t.guests} guests`,hardFail:!0};let r=e.sleeps-t.guests,o=r<=1?1:r===2?.9:.75;return{...a,score:o,specified:!0,note:`Sleeps ${e.sleeps}`,reason:`Sleeps ${e.sleeps}, room for your group of ${t.guests}`}}function ta(e,t){let a={factor:"Bedrooms",weight:q.Bedrooms},r=e.bedrooms===0?"Studio":`${e.bedrooms} bedroom${e.bedrooms>1?"s":""}`,o=t.bedrooms,s=!1;return o===void 0&&t.guests&&(o=Math.max(1,Math.ceil(t.guests/2)),s=!0),o===void 0?{...a,score:E,specified:!1,note:r}:e.bedrooms===o?{...a,score:1,specified:!s,note:r,reason:s?void 0:`${r}, as requested`}:e.bedrooms>o?{...a,score:e.bedrooms===o+1?.75:.55,specified:!s,note:`${r} (more than needed)`}:{...a,score:s?.5:.1,specified:!s,note:r,caution:s?void 0:`${r}, fewer than the ${o} you asked for`}}function aa(e,t){let a={factor:"Purpose",weight:q.Purpose};if(!t.purpose)return{...a,score:E,specified:!1,note:e.suitableFor.join(", ")};if(e.suitableFor.includes(t.purpose)){let r={Business:"Set up for business stays",Family:"Family-friendly layout",Relocation:"Suited to relocation and longer stays",Groups:"Space for groups",Leisure:"Well placed for a city break"};return{...a,score:1,specified:!0,note:`Suited to ${t.purpose.toLowerCase()}`,reason:r[t.purpose]}}return{...a,score:.25,specified:!0,note:`Not listed for ${t.purpose.toLowerCase()}`,caution:`Not listed as suited to ${t.purpose.toLowerCase()} stays`}}function ra(e,t){let a={factor:"Amenities",weight:q.Amenities},r=Array.from(new Set([...t.amenities,...t.purpose?$t[t.purpose]:[]]));if(r.length===0)return{...a,score:E,specified:!1,note:`${e.amenities.length} amenities`};let o=r.filter(n=>e.amenities.includes(n)),s=t.amenities.filter(n=>!e.amenities.includes(n)),l=o.length/r.length;return{...a,score:l,specified:t.amenities.length>0||!!t.purpose,note:`${o.length} of ${r.length} key amenities`,reason:o.length?`Includes ${o.slice(0,3).join(", ").toLowerCase()}`:void 0,caution:s.length?`No ${s.join(", ").toLowerCase()} listed`:void 0}}function oa(e,t){let a={factor:"Stay",weight:q.Stay};if(!t.nights){if(t.purpose==="Relocation"){let r=e.minimumStay>=5||e.features.some(o=>/monthly/i.test(o));return{...a,score:r?1:.8,specified:!1,note:`Minimum ${e.minimumStay} nights`,reason:r?"Monthly and extended stays welcome":void 0}}return{...a,score:E,specified:!1,note:`Minimum ${e.minimumStay} nights`}}return t.nights>=e.minimumStay?{...a,score:1,specified:!0,note:`Minimum ${e.minimumStay} nights`,reason:`Your ${t.nights}-night stay meets the ${e.minimumStay}-night minimum`}:{...a,score:.15,specified:!0,note:`Minimum ${e.minimumStay} nights`,caution:`Minimum stay is ${e.minimumStay} nights`,hardFail:!0}}function sa(e,t){let a=[Jt(e,t),ea(e,t),ta(e,t),aa(e,t),ra(e,t),oa(e,t)],r=a.reduce((d,u)=>d+u.weight*u.score,0)*100;a.some(d=>"hardFail"in d&&d.hardFail)&&(r=Math.min(r,49));let o=a[0];t.location&&t.location.tags.length>0&&o.score<.5&&(r=Math.min(r,70));let s=a.map(d=>"reason"in d?d.reason:void 0).filter(d=>!!d);for(let d of e.features){if(s.length>=4)break;s.some(u=>u.toLowerCase().includes(d.toLowerCase().slice(0,12)))||s.push(d)}let l=a.map(d=>"caution"in d?d.caution:void 0).filter(d=>!!d),n=a.map(({factor:d,weight:u,score:h,specified:m,note:b})=>({factor:d,weight:u,score:h,specified:m,note:b}));return{property:e,matchScore:Math.round(r),reasons:s.slice(0,5),cautions:l,breakdown:n}}function la(e,t){return e.map(a=>sa(a,t)).sort((a,r)=>r.matchScore-a.matchScore||(r.property.rating??0)-(a.property.rating??0))}function ia(e,t){let a=t.filter(s=>s.matchScore>=75);if(t.length===0)return"No apartments in the demo portfolio match that request yet. Try a different area or group size.";let r=t[0].property.name,o=[e.bedrooms!==void 0?e.bedrooms===0?"a studio":`${e.bedrooms} bedrooms`:null,e.guests?`${e.guests} guest${e.guests>1?"s":""}`:null,e.location?`near ${e.location.label}`:null,e.purpose?`a ${e.purpose.toLowerCase()} stay`:null,e.nights?`${e.nights} nights`:null].filter(Boolean).join(", ");return a.length===0?`Nothing is a close fit for ${o||"that request"}, so here are the nearest options. ${r} comes closest.`:`${a.length} apartment${a.length>1?"s":""} suit${a.length>1?"":"s"} ${o||"your request"}. ${r} is the strongest match.`}async function de(e,t=6){let a=V(e),r=await R(),o=la(r,a),s=o.filter(n=>n.matchScore>=60),l=(s.length>=2?s:o.slice(0,3)).slice(0,t);return{criteria:a,recommendations:l,summary:ia(a,l)}}function na(e){let t=2166136261;for(let a=0;a<e.length;a++)t=Math.imul(t^e.charCodeAt(a),16777619);return()=>{t+=1831565813;let a=t;return a=Math.imul(a^a>>>15,a|1),a^=a+Math.imul(a^a>>>7,a|61),((a^a>>>14)>>>0)/4294967296}}function K(e){let t=e.getFullYear(),a=String(e.getMonth()+1).padStart(2,"0"),r=String(e.getDate()).padStart(2,"0");return`${t}-${a}-${r}`}function St(e){let[t,a,r]=e.split("-").map(Number);return new Date(t,a-1,r)}function At(e,t){return Math.round((St(t).getTime()-St(e).getTime())/864e5)}async function Mt(e,t=new Date,a=120){let r=na(e.id),o=new Date(t.getFullYear(),t.getMonth(),1),s=K(t),l=[],n=new Set,d=3+Math.floor(r()*5),u=a+40;for(;d<u;){let h=2+Math.floor(r()*5);for(let m=0;m<h;m++)n.add(d+m);d+=h+4+Math.floor(r()*9)}for(let h=0;h<u;h++){let m=new Date(o.getFullYear(),o.getMonth(),o.getDate()+h),b=K(m),k=m.getDay()===5||m.getDay()===6,y=b<s?"past":n.has(h)?"booked":"available";l.push({date:b,status:y,rate:e.priceFrom?Math.round(e.priceFrom*(k?1.12:1)):void 0})}return{propertyId:e.id,isDemo:!0,days:l}}function Ft(e,t,a){return e.filter(r=>r.date>=t&&r.date<a).every(r=>r.status==="available")}function da(e){return[{key:"structured",group:"Property data",label:"Structured property record",passed:!!(e.id&&e.name&&e.brand)},{key:"status",group:"Property data",label:"Published (active)",passed:e.status==="active"},{key:"address",group:"Location",label:"Full address and postcode",passed:!!(e.address&&e.postcode)},{key:"coords",group:"Location",label:"Map coordinates",passed:e.latitude!==void 0&&e.longitude!==void 0},{key:"transport",group:"Location",label:"Nearby transport (2+ links)",passed:e.nearbyTransport.length>=2},{key:"beds",group:"Accommodation",label:"Bedrooms",passed:Number.isInteger(e.bedrooms)},{key:"baths",group:"Accommodation",label:"Bathrooms",passed:e.bathrooms>0},{key:"sleeps",group:"Accommodation",label:"Guest capacity",passed:e.sleeps>0},{key:"size",group:"Accommodation",label:"Floor area",passed:!!e.sizeSqFt},{key:"amenities",group:"Amenities",label:"Structured amenities (6+)",passed:e.amenities.length>=6},{key:"suitability",group:"Amenities",label:"Guest suitability tags",passed:e.suitableFor.length>=2},{key:"description",group:"Content",label:"Property description (150+ characters)",passed:e.description.length>=150},{key:"images",group:"Content",label:"Photo gallery (3+ images)",passed:e.images.length>=3},{key:"price",group:"Content",label:"Indicative price",passed:e.priceFrom!==void 0},{key:"slug",group:"Search",label:"Search-friendly URL",passed:/^[a-z0-9-]+$/.test(e.slug)},{key:"attractions",group:"Search",label:"Nearby attractions",passed:e.nearbyAttractions.length>=2},{key:"schema",group:"Structured data",label:"Schema-ready (address, capacity, amenities)",passed:!!(e.postcode&&e.sleeps&&e.amenities.length)}]}var fa=["structured","address","coords","beds","sleeps","amenities","suitability","description"],pa=["slug","description","images","address","attractions"];function ua(e){let t=da(e),a=t.filter(o=>o.passed).length,r=o=>o.every(s=>t.find(l=>l.key===s)?.passed);return{property:e,completeness:Math.round(a/t.length*100),seoReady:r(pa),aiReady:r(fa),hasAvailabilityFeed:!1,checks:t,missing:t.filter(o=>!o.passed).map(o=>o.label)}}async function fe(){let e=await gt(),t=e.map(ua),a=Math.round(t.reduce((d,u)=>d+u.completeness,0)/t.length),r=t.filter(d=>d.completeness===100).length,o=e.map(d=>d.lastUpdated).sort().at(-1)??"",s=new Map;for(let d of t)for(let u of d.checks){let h=s.get(u.group)??{passed:0,total:0,items:new Map};h.total++,u.passed&&h.passed++;let m=h.items.get(u.label)??{passed:0,total:0};m.total++,u.passed&&m.passed++,h.items.set(u.label,m),s.set(u.group,h)}let l=Array.from(s.entries()).map(([d,u])=>({group:d,percent:Math.round(u.passed/u.total*100),items:Array.from(u.items.entries()).map(([h,m])=>({label:h,passed:m.passed,total:m.total}))})),n=Math.round(l.reduce((d,u)=>d+u.percent,0)/l.length);return{health:t,total:e.length,active:e.filter(d=>d.status==="active").length,averageCompleteness:a,complete:r,needsAttention:t.filter(d=>d.completeness<100).length,aiReady:t.filter(d=>d.aiReady).length,lastUpdated:o,readiness:l,readinessScore:n}}function pe(e,t="https://www.golondonapartments.com"){return{"@context":"https://schema.org","@type":"Apartment","@id":`${t}/apartments/${e.slug}`,name:e.name,description:e.description,url:`${t}/apartments/${e.slug}`,numberOfRooms:e.bedrooms+1,numberOfBedrooms:e.bedrooms,numberOfBathroomsTotal:e.bathrooms,occupancy:{"@type":"QuantitativeValue",maxValue:e.sleeps},...e.sizeSqFt?{floorSize:{"@type":"QuantitativeValue",value:e.sizeSqFt,unitCode:"FTK"}}:{},address:{"@type":"PostalAddress",streetAddress:e.address.split(",")[0],addressLocality:"London",postalCode:e.postcode,addressCountry:"GB"},...e.latitude&&e.longitude?{geo:{"@type":"GeoCoordinates",latitude:e.latitude,longitude:e.longitude}}:{},amenityFeature:e.amenities.map(a=>({"@type":"LocationFeatureSpecification",name:a,value:!0})),image:e.images,containedInPlace:{"@type":"Place",name:e.location},provider:{"@type":"Organization",name:e.brand}}}var i={xmlns:"http://www.w3.org/2000/svg",width:24,height:24,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor","stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round"};var ue=["svg",i,[["path",{d:"M6 12H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"}],["path",{d:"M6 8h12"}],["path",{d:"M18.3 17.7a2.5 2.5 0 0 1-3.16 3.83 2.53 2.53 0 0 1-1.14-2V12"}],["path",{d:"M6.6 15.6A2 2 0 1 0 10 17v-5"}]]];var me=["svg",i,[["path",{d:"m21 16-4 4-4-4"}],["path",{d:"M17 20V4"}],["path",{d:"m3 8 4-4 4 4"}],["path",{d:"M7 4v16"}]]];var ce=["svg",i,[["path",{d:"m5 12 7-7 7 7"}],["path",{d:"M12 19V5"}]]];var xe=["svg",i,[["path",{d:"M9 12h.01"}],["path",{d:"M15 12h.01"}],["path",{d:"M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"}],["path",{d:"M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"}]]];var he=["svg",i,[["path",{d:"M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"}],["line",{x1:"10",x2:"8",y1:"5",y2:"7"}],["line",{x1:"2",x2:"22",y1:"12",y2:"12"}],["line",{x1:"7",x2:"7",y1:"19",y2:"21"}],["line",{x1:"17",x2:"17",y1:"19",y2:"21"}]]];var ge=["svg",i,[["path",{d:"M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"}],["path",{d:"M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"}],["path",{d:"M12 4v6"}],["path",{d:"M2 18h20"}]]];var be=["svg",i,[["path",{d:"M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"}],["rect",{width:"20",height:"14",x:"2",y:"6",rx:"2"}]]];var ye=["svg",i,[["path",{d:"M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"}],["path",{d:"M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"}],["path",{d:"M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"}],["path",{d:"M10 6h4"}],["path",{d:"M10 10h4"}],["path",{d:"M10 14h4"}],["path",{d:"M10 18h4"}]]];var we=["svg",i,[["rect",{width:"16",height:"20",x:"4",y:"2",rx:"2",ry:"2"}],["path",{d:"M9 22v-4h6v4"}],["path",{d:"M8 6h.01"}],["path",{d:"M16 6h.01"}],["path",{d:"M12 6h.01"}],["path",{d:"M12 10h.01"}],["path",{d:"M12 14h.01"}],["path",{d:"M16 10h.01"}],["path",{d:"M16 14h.01"}],["path",{d:"M8 10h.01"}],["path",{d:"M8 14h.01"}]]];var ke=["svg",i,[["path",{d:"M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"}],["path",{d:"M16 2v4"}],["path",{d:"M8 2v4"}],["path",{d:"M3 10h5"}],["path",{d:"M17.5 17.5 16 16.3V14"}],["circle",{cx:"16",cy:"16",r:"6"}]]];var ve=["svg",i,[["path",{d:"M8 2v4"}],["path",{d:"M16 2v4"}],["rect",{width:"18",height:"18",x:"3",y:"4",rx:"2"}],["path",{d:"M3 10h18"}],["path",{d:"M8 14h.01"}],["path",{d:"M12 14h.01"}],["path",{d:"M16 14h.01"}],["path",{d:"M8 18h.01"}],["path",{d:"M12 18h.01"}],["path",{d:"M16 18h.01"}]]];var Ce=["svg",i,[["rect",{width:"18",height:"18",x:"3",y:"4",rx:"2"}],["path",{d:"M16 2v4"}],["path",{d:"M3 10h18"}],["path",{d:"M8 2v4"}],["path",{d:"M17 14h-6"}],["path",{d:"M13 18H7"}],["path",{d:"M7 14h.01"}],["path",{d:"M17 18h.01"}]]];var $e=["svg",i,[["path",{d:"m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"}],["path",{d:"M7 14h.01"}],["path",{d:"M17 14h.01"}],["rect",{width:"18",height:"8",x:"3",y:"10",rx:"2"}],["path",{d:"M5 18v2"}],["path",{d:"M19 18v2"}]]];var Se=["svg",i,[["path",{d:"M20 6 9 17l-5-5"}]]];var Ae=["svg",i,[["path",{d:"M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"}],["path",{d:"M6 17h12"}]]];var Me=["svg",i,[["path",{d:"m15 18-6-6 6-6"}]]];var Fe=["svg",i,[["path",{d:"m9 18 6-6-6-6"}]]];var X=["svg",i,[["circle",{cx:"12",cy:"12",r:"10"}],["line",{x1:"12",x2:"12",y1:"8",y2:"12"}],["line",{x1:"12",x2:"12.01",y1:"16",y2:"16"}]]];var _=["svg",i,[["circle",{cx:"12",cy:"12",r:"10"}],["path",{d:"m9 12 2 2 4-4"}]]];var Pe=["svg",i,[["circle",{cx:"12",cy:"12",r:"10"}],["polyline",{points:"12 6 12 12 16 14"}]]];var Le=["svg",i,[["ellipse",{cx:"12",cy:"5",rx:"9",ry:"3"}],["path",{d:"M3 5V19A9 3 0 0 0 21 19V5"}],["path",{d:"M3 12A9 3 0 0 0 21 12"}]]];var Be=["svg",i,[["path",{d:"M14.4 14.4 9.6 9.6"}],["path",{d:"M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"}],["path",{d:"m21.5 21.5-1.4-1.4"}],["path",{d:"M3.9 3.9 2.5 2.5"}],["path",{d:"M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"}]]];var De=["svg",i,[["path",{d:"m21 21-6-6m6 6v-4.8m0 4.8h-4.8"}],["path",{d:"M3 16.2V21m0 0h4.8M3 21l6-6"}],["path",{d:"M21 7.8V3m0 0h-4.8M21 3l-6 6"}],["path",{d:"M3 7.8V3m0 0h4.8M3 3l6 6"}]]];var Te=["svg",i,[["circle",{cx:"12",cy:"12",r:"10"}],["path",{d:"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"}],["path",{d:"M2 12h20"}]]];var Re=["svg",i,[["path",{d:"M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"}]]];var Y=["svg",i,[["path",{d:"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"}],["path",{d:"M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"}]]];var qe=["svg",i,[["path",{d:"M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"}],["circle",{cx:"16.5",cy:"7.5",r:".5",fill:"currentColor"}]]];var Ee=["svg",i,[["line",{x1:"3",x2:"21",y1:"22",y2:"22"}],["line",{x1:"6",x2:"6",y1:"18",y2:"11"}],["line",{x1:"10",x2:"10",y1:"18",y2:"11"}],["line",{x1:"14",x2:"14",y1:"18",y2:"11"}],["line",{x1:"18",x2:"18",y1:"18",y2:"11"}],["polygon",{points:"12 2 20 7 4 7"}]]];var Oe=["svg",i,[["path",{d:"M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"}]]];var He=["svg",i,[["rect",{width:"7",height:"9",x:"3",y:"3",rx:"1"}],["rect",{width:"7",height:"5",x:"14",y:"3",rx:"1"}],["rect",{width:"7",height:"9",x:"14",y:"12",rx:"1"}],["rect",{width:"7",height:"5",x:"3",y:"16",rx:"1"}]]];var Ie=["svg",i,[["path",{d:"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"}],["circle",{cx:"12",cy:"10",r:"3"}]]];var We=["svg",i,[["path",{d:"M8 3H5a2 2 0 0 0-2 2v3"}],["path",{d:"M21 8V5a2 2 0 0 0-2-2h-3"}],["path",{d:"M3 16v3a2 2 0 0 0 2 2h3"}],["path",{d:"M16 21h3a2 2 0 0 0 2-2v-3"}]]];var Ue=["svg",i,[["line",{x1:"4",x2:"20",y1:"12",y2:"12"}],["line",{x1:"4",x2:"20",y1:"6",y2:"6"}],["line",{x1:"4",x2:"20",y1:"18",y2:"18"}]]];var ze=["svg",i,[["path",{d:"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"}],["path",{d:"M13 8H7"}],["path",{d:"M17 12H7"}]]];var Ge=["svg",i,[["path",{d:"M5 12h14"}]]];var je=["svg",i,[["path",{d:"M12 22v-5"}],["path",{d:"M9 8V2"}],["path",{d:"M15 8V2"}],["path",{d:"M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"}]]];var Ve=["svg",i,[["path",{d:"M5 12h14"}],["path",{d:"M12 5v14"}]]];var Ne=["svg",i,[["circle",{cx:"11",cy:"11",r:"8"}],["path",{d:"m21 21-4.3-4.3"}]]];var Ke=["svg",i,[["path",{d:"M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"}]]];var Xe=["svg",i,[["path",{d:"M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"}]]];var Q=["svg",i,[["path",{d:"M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"}],["path",{d:"M20 3v4"}],["path",{d:"M22 5h-4"}],["path",{d:"M4 17v2"}],["path",{d:"M5 18H3"}]]];var _e=["svg",i,[["polygon",{points:"12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"}]]];var Ye=["svg",i,[["circle",{cx:"12",cy:"12",r:"4"}],["path",{d:"M12 2v2"}],["path",{d:"M12 20v2"}],["path",{d:"m4.93 4.93 1.41 1.41"}],["path",{d:"m17.66 17.66 1.41 1.41"}],["path",{d:"M2 12h2"}],["path",{d:"M20 12h2"}],["path",{d:"m6.34 17.66-1.41 1.41"}],["path",{d:"m19.07 4.93-1.41 1.41"}]]];var Qe=["svg",i,[["path",{d:"M8 3.1V7a4 4 0 0 0 8 0V3.1"}],["path",{d:"m9 15-1-1"}],["path",{d:"m15 15 1-1"}],["path",{d:"M9 19c-2.8 0-5-2.2-5-5v-4a8 8 0 0 1 16 0v4c0 2.8-2.2 5-5 5Z"}],["path",{d:"m8 19-2 3"}],["path",{d:"m16 19 2 3"}]]];var Ze=["svg",i,[["path",{d:"M10 10v.2A3 3 0 0 1 8.9 16H5a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z"}],["path",{d:"M7 16v6"}],["path",{d:"M13 19v3"}],["path",{d:"M12 19h8.3a1 1 0 0 0 .7-1.7L18 14h.3a1 1 0 0 0 .7-1.7L16 9h.2a1 1 0 0 0 .8-1.7L13 3l-1.4 1.5"}]]];var Je=["svg",i,[["rect",{width:"20",height:"15",x:"2",y:"7",rx:"2",ry:"2"}],["polyline",{points:"17 2 12 7 7 2"}]]];var et=["svg",i,[["path",{d:"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"}],["circle",{cx:"9",cy:"7",r:"4"}],["path",{d:"M22 21v-2a4 4 0 0 0-3-3.87"}],["path",{d:"M16 3.13a4 4 0 0 1 0 7.75"}]]];var Z=["svg",i,[["path",{d:"m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8"}],["path",{d:"M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7"}],["path",{d:"m2.1 21.8 6.4-6.3"}],["path",{d:"m19 5-7 7"}]]];var tt=["svg",i,[["path",{d:"M3 6h3"}],["path",{d:"M17 6h.01"}],["rect",{width:"18",height:"20",x:"3",y:"2",rx:"2"}],["circle",{cx:"12",cy:"13",r:"5"}],["path",{d:"M12 18a2.5 2.5 0 0 0 0-5 2.5 2.5 0 0 1 0-5"}]]];var at=["svg",i,[["path",{d:"M12 20h.01"}],["path",{d:"M2 8.82a15 15 0 0 1 20 0"}],["path",{d:"M5 12.859a10 10 0 0 1 14 0"}],["path",{d:"M8.5 16.429a5 5 0 0 1 7 0"}]]];var rt=["svg",i,[["path",{d:"M18 6 6 18"}],["path",{d:"m6 6 12 12"}]]];var ma={Database:Le,Globe:Te,LayoutDashboard:He,CalendarClock:ke,Plug:je,Building:we,Landmark:Ee,Maximize:We,AirVent:ue,ArrowUp:ce,ArrowUpDown:me,Baby:xe,Bath:he,BedDouble:ge,Briefcase:be,Building2:ye,CalendarDays:ve,CalendarRange:Ce,CarFront:$e,Check:Se,ChefHat:Ae,ChevronLeft:Me,ChevronRight:Fe,CircleAlert:X,CircleCheck:_,Clock:Pe,Dumbbell:Be,Expand:De,Headphones:Re,House:Y,KeyRound:qe,Laptop:Oe,MapPin:Ie,Menu:Ue,MessageSquareText:ze,Minus:Ge,Plus:Ve,Search:Ne,Shirt:Ke,Sparkle:Xe,Sparkles:Q,Star:_e,Sun:Ye,TrainFront:Qe,Trees:Ze,Tv:Je,Users:et,UtensilsCrossed:Z,WashingMachine:tt,Wifi:at,X:rt};function c(e,t="h-4 w-4",a=""){let r=ma[e];if(!r)return console.warn("missing icon",e),"";let o=r[2].map(([s,l])=>`<${s} ${Object.entries(l).map(([n,d])=>`${n}="${d}"`).join(" ")}/>`).join("");return`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${t}" ${a} aria-hidden="true" focusable="false">${o}</svg>`}var Pt=[{wall:"#E8E3D9",floor:"#C7AE8A",a:"#2F4F46",b:"#B08A4E",c:"#DCD0BC",sky:"#CBDBE2",city:"#98ACB5"},{wall:"#DFE4E4",floor:"#B89C7A",a:"#27384F",b:"#C9A46A",c:"#E8E2D6",sky:"#D3DEE6",city:"#8FA2AE"},{wall:"#EFE8DE",floor:"#A98965",a:"#6E4838",b:"#3F5E57",c:"#E4D8C6",sky:"#D8E1E3",city:"#A0AFB2"},{wall:"#E5E7E0",floor:"#CDB797",a:"#56644A",b:"#B7864A",c:"#EEE7D9",sky:"#D0DDDF",city:"#96A9AA"},{wall:"#E7E2E4",floor:"#B59D83",a:"#463B52",b:"#A9844C",c:"#EAE3DB",sky:"#D6DCE6",city:"#9AA3B3"},{wall:"#DEDAD2",floor:"#9C8467",a:"#34403F",b:"#C08D5A",c:"#E8E2D7",sky:"#CFDADF",city:"#8FA0A6"}],Lt=["living","bedroom","kitchen","work","bath"],J=["Living area","Bedroom","Kitchen","Workspace","Bathroom"];function ca(e){let t=0;for(let a=0;a<e.length;a++)t=t*31+e.charCodeAt(a)|0;return Math.abs(t)}function ot(e,t,a,r,o){let s=t+r,l=[[.02,.28],[.1,.42],[.2,.22],[.27,.5],[.36,.3],[.46,.36],[.58,.24],[.66,.46],[.76,.3],[.86,.4],[.94,.26]],n=a*.1,d=l.map(([m,b])=>`<rect x="${e+m*a}" y="${s-b*r}" width="${n}" height="${b*r}" fill="${o.city}"/>`).join(""),u=`<polygon points="${e+a*.52},${s} ${e+a*.6},${t+r*.18} ${e+a*.64},${s}" fill="${o.city}" opacity=".85"/>`,h=`<path d="M${e+a*.12},${s-r*.42} a${a*.07},${a*.07} 0 0 1 ${a*.14},0 z" fill="${o.city}"/>`;return`<clipPath id="w"><rect x="${e}" y="${t}" width="${a}" height="${r}"/></clipPath>
+  <g clip-path="url(#w)"><rect x="${e}" y="${t}" width="${a}" height="${r}" fill="${o.sky}"/><rect x="${e}" y="${t}" width="${a}" height="${r*.5}" fill="#fff" opacity=".35"/>${u}${h}${d}</g>
+  <rect x="${e}" y="${t}" width="${a}" height="${r}" fill="none" stroke="#FBFAF7" stroke-width="12"/>
+  <line x1="${e+a/2}" y1="${t}" x2="${e+a/2}" y2="${t+r}" stroke="#FBFAF7" stroke-width="8"/>
+  <line x1="${e}" y1="${t+r*.42}" x2="${e+a}" y2="${t+r*.42}" stroke="#FBFAF7" stroke-width="6"/>
+  <rect x="${e-16}" y="${t+r}" width="${a+32}" height="12" fill="#FBFAF7"/>`}function U(e,t=440){let a="";for(let r=1;r<6;r++)a+=`<line x1="0" y1="${t+r*30}" x2="800" y2="${t+r*30}" stroke="#000" stroke-opacity=".06"/>`;return`<rect y="${t}" width="800" height="${600-t}" fill="${e.floor}"/>${a}<rect y="${t-8}" width="800" height="8" fill="#FBFAF7" opacity=".8"/>`}var xa={living:e=>`${ot(470,90,240,250,e)}
+    <rect x="130" y="120" width="150" height="110" fill="${e.c}" stroke="${e.b}" stroke-width="6"/>
+    <path d="M150 210 L190 160 L220 190 L240 170 L262 210 Z" fill="${e.a}" opacity=".5"/>
+    ${U(e)}
+    <ellipse cx="300" cy="520" rx="260" ry="38" fill="${e.c}" opacity=".9"/>
+    <rect x="80" y="300" width="330" height="80" rx="22" fill="${e.a}"/>
+    <rect x="70" y="350" width="350" height="90" rx="18" fill="${e.a}"/>
+    <rect x="68" y="330" width="34" height="100" rx="14" fill="${e.a}" filter="brightness(.9)"/>
+    <rect x="390" y="330" width="34" height="100" rx="14" fill="${e.a}"/>
+    <rect x="115" y="318" width="70" height="48" rx="10" fill="${e.b}"/>
+    <rect x="300" y="318" width="70" height="48" rx="10" fill="${e.c}"/>
+    <rect x="86" y="440" width="10" height="26" fill="#3a3a3a"/><rect x="396" y="440" width="10" height="26" fill="#3a3a3a"/>
+    <ellipse cx="560" cy="470" rx="90" ry="18" fill="${e.b}"/>
+    <rect x="555" y="470" width="10" height="46" fill="${e.b}"/>
+    <line x1="720" y1="250" x2="720" y2="500" stroke="#2c2c2c" stroke-width="5"/>
+    <path d="M690 250 h60 l-12 -46 h-36 z" fill="${e.c}"/>
+    <circle cx="560" cy="452" r="12" fill="${e.a}" opacity=".7"/>`,bedroom:e=>`${ot(560,100,170,220,e)}
+    <rect x="200" y="120" width="220" height="90" fill="${e.c}" opacity=".7"/>
+    ${U(e)}
+    <rect x="120" y="240" width="380" height="130" rx="10" fill="${e.a}"/>
+    <rect x="110" y="350" width="400" height="110" rx="12" fill="#F6F4EF"/>
+    <rect x="110" y="400" width="400" height="60" rx="6" fill="${e.b}" opacity=".85"/>
+    <rect x="150" y="310" width="140" height="56" rx="16" fill="#FFFFFF"/>
+    <rect x="330" y="310" width="140" height="56" rx="16" fill="#FFFFFF"/>
+    <rect x="30" y="360" width="70" height="80" fill="${e.c}"/><rect x="520" y="360" width="70" height="80" fill="${e.c}"/>
+    <path d="M45 360 l12 -46 h30 l12 46 z" fill="#F6F4EF"/><line x1="65" y1="314" x2="65" y2="300" stroke="#333" stroke-width="3"/>
+    <path d="M535 360 l12 -46 h30 l12 46 z" fill="#F6F4EF"/>`,kitchen:e=>`
+    <rect x="60" y="90" width="680" height="120" fill="${e.c}"/>
+    ${[0,1,2,3,4,5].map(t=>`<rect x="${66+t*112}" y="96" width="104" height="108" fill="none" stroke="#000" stroke-opacity=".08"/>`).join("")}
+    <rect x="60" y="210" width="680" height="120" fill="#FBFAF7" opacity=".6"/>
+    ${[0,1,2,3,4,5,6,7,8,9,10,11].map(t=>`<line x1="${60+t*57}" y1="210" x2="${60+t*57}" y2="330" stroke="#000" stroke-opacity=".05"/>`).join("")}
+    ${U(e,460)}
+    <rect x="50" y="320" width="700" height="18" fill="${e.b}"/>
+    <rect x="60" y="338" width="680" height="122" fill="${e.a}"/>
+    ${[0,1,2,3,4,5].map(t=>`<rect x="${70+t*112}" y="350" width="100" height="98" fill="none" stroke="#fff" stroke-opacity=".15"/><rect x="${112+t*112}" y="360" width="18" height="4" fill="${e.b}"/>`).join("")}
+    <rect x="330" y="290" width="110" height="30" rx="4" fill="#2d2d2d"/>
+    <path d="M540 320 v-40 q0 -20 20 -20 h10" stroke="#555" stroke-width="6" fill="none"/>
+    ${[250,400,550].map(t=>`<line x1="${t}" y1="0" x2="${t}" y2="60" stroke="#333" stroke-width="2"/><path d="M${t-24} 84 q24 -34 48 0 z" fill="${e.b}"/>`).join("")}
+    <rect x="160" y="480" width="480" height="24" fill="${e.c}"/><rect x="180" y="504" width="440" height="80" fill="${e.a}" opacity=".85"/>`,work:e=>`${ot(500,90,220,250,e)}
+    <rect x="70" y="100" width="190" height="300" fill="${e.c}"/>
+    ${[0,1,2,3].map(t=>`<rect x="70" y="${170+t*70}" width="190" height="8" fill="${e.b}"/>${[0,1,2,3,4].map(a=>`<rect x="${84+a*30}" y="${128+t*70}" width="18" height="${36+(t+a)%3*4}" fill="${[e.a,e.b,"#8b8b8b"][(t+a)%3]}"/>`).join("")}`).join("")}
+    ${U(e)}
+    <rect x="300" y="330" width="360" height="16" fill="${e.b}"/>
+    <rect x="316" y="346" width="10" height="110" fill="#2c2c2c"/><rect x="634" y="346" width="10" height="110" fill="#2c2c2c"/>
+    <rect x="410" y="232" width="150" height="90" rx="6" fill="#262626"/><rect x="418" y="240" width="134" height="72" fill="${e.sky}"/>
+    <rect x="478" y="322" width="14" height="10" fill="#262626"/>
+    <rect x="360" y="370" width="110" height="90" rx="18" fill="${e.a}"/><rect x="408" y="460" width="12" height="50" fill="#2c2c2c"/>
+    <ellipse cx="414" cy="516" rx="50" ry="8" fill="#2c2c2c"/>
+    <path d="M600 330 l-8 -34 h26 l-8 34 z" fill="${e.c}"/><circle cx="605" cy="286" r="18" fill="${e.a}" opacity=".6"/>`,bath:e=>`
+    <rect width="800" height="440" fill="#F4F2EE"/>
+    ${Array.from({length:16},(t,a)=>`<line x1="${a*52}" y1="0" x2="${a*52}" y2="440" stroke="${e.c}" stroke-width="2"/>`).join("")}
+    ${Array.from({length:9},(t,a)=>`<line x1="0" y1="${a*52}" x2="800" y2="${a*52}" stroke="${e.c}" stroke-width="2"/>`).join("")}
+    <rect y="260" width="800" height="180" fill="${e.a}" opacity=".9"/>
+    ${U(e)}
+    <circle cx="560" cy="170" r="78" fill="${e.sky}" stroke="${e.b}" stroke-width="8"/>
+    <rect x="470" y="300" width="180" height="20" fill="#FBFAF7"/><rect x="490" y="320" width="140" height="110" fill="${e.b}" opacity=".85"/>
+    <ellipse cx="560" cy="300" rx="60" ry="10" fill="#fff"/>
+    <rect x="70" y="330" width="330" height="120" rx="50" fill="#FFFFFF"/><rect x="70" y="330" width="330" height="22" rx="10" fill="#EDEBE6"/>
+    <path d="M110 330 v-80 h40" stroke="#9a9a9a" stroke-width="6" fill="none"/>
+    <rect x="700" y="360" width="46" height="70" rx="6" fill="${e.c}"/><path d="M723 360 c-30 -40 -20 -80 0 -100 c20 20 30 60 0 100" fill="#56644A"/>`},st=new Map;function Bt(e,t=0){let a=`${e.id}:${t}`;if(st.has(a))return st.get(a);let r=Pt[ca(e.id)%Pt.length],o=Lt[t%Lt.length],s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="${r.wall}"/>${xa[o](r)}</svg>`,l=`data:image/svg+xml;charset=utf-8,${encodeURIComponent(s.replace(/\s+/g," "))}`;return st.set(a,l),l}var C=(e,t=document)=>t.querySelector(e),p=e=>String(e??"").replace(/[&<>"']/g,t=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[t]),g=(...e)=>e.filter(Boolean).join(" "),ha=encodeURIComponent,z=e=>new Intl.NumberFormat("en-GB",{style:"currency",currency:"GBP",maximumFractionDigits:0}).format(e),F=(e,t={day:"numeric",month:"short",year:"numeric"})=>{let[a,r,o]=e.split("-").map(Number);return new Date(a,r-1,o).toLocaleDateString("en-GB",t)},D=e=>e===0?"Studio":`${e} bedroom${e>1?"s":""}`,B=e=>`#/search?q=${ha(e)}`,$=(e,t)=>`#/apartment/${e.slug}${t?`?at=${t}`:""}`,ga="inline-flex items-center justify-center gap-2 rounded-control font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap",ba={primary:"bg-door text-white hover:bg-door-hover",secondary:"border border-ink/20 bg-paper text-ink hover:border-ink/50",ghost:"text-ink hover:bg-stone"},ya={sm:"h-9 px-3.5 text-sm",md:"h-11 px-5 text-[15px]",lg:"h-14 px-7 text-base"},w=(e="primary",t="md",a="")=>g(ga,ba[e],ya[t],a),I=(e="Demo data",t="")=>`<span class="${g("inline-flex items-center gap-1.5 rounded-plate border border-brass/40 bg-brass-soft px-2 py-0.5 text-[12px] font-medium text-brass-deep",t)}"><span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-brass"></span>${e}</span>`;function A(e,t,a,r=""){return!e.images.length||t>=e.images.length?`<div role="img" aria-label="${p(r||"No photo yet")}" class="${g("flex items-center justify-center bg-stone-deep",a)}">${c("Building2","h-8 w-8 text-ink/25")}</div>`:`<img src="${Bt(e,t)}" alt="${p(r)}" class="${g("object-cover",a)}" loading="lazy" decoding="async">`}function Wt(e,t="md"){let a=t==="sm"?15:20,r=t==="sm"?3:3.5,o=2*Math.PI*a,s=(a+r)*2,l=e>=85?"text-door":e>=65?"text-brass":"text-ink-muted";return`<div class="flex items-center gap-2.5"><svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}" aria-hidden="true" class="${l}">
+    <circle cx="${s/2}" cy="${s/2}" r="${a}" fill="none" stroke="currentColor" stroke-opacity=".15" stroke-width="${r}"/>
+    <circle cx="${s/2}" cy="${s/2}" r="${a}" fill="none" stroke="currentColor" stroke-width="${r}" stroke-linecap="round" stroke-dasharray="${e/100*o} ${o}" transform="rotate(-90 ${s/2} ${s/2})"/></svg>
+    <span class="${g("font-semibold tabular-nums",t==="sm"?"text-sm":"text-lg",l)}">${e}% match</span></div>`}var wa=[[/wi-?fi/i,"Wifi"],[/workspace|desk|study/i,"Laptop"],[/kitchen/i,"ChefHat"],[/washer|washing/i,"WashingMachine"],[/dishwasher/i,"UtensilsCrossed"],[/lift|elevator/i,"ArrowUpDown"],[/tv/i,"Tv"],[/air con/i,"AirVent"],[/housekeeping/i,"Sparkles"],[/support|concierge/i,"Headphones"],[/gym/i,"Dumbbell"],[/parking/i,"CarFront"],[/cot|high chair/i,"Baby"],[/terrace|balcony/i,"Sun"],[/iron/i,"Shirt"],[/invoic|corporate/i,"Briefcase"],[/station|line|walk|minutes|tube/i,"TrainFront"],[/bedroom|en-suite/i,"BedDouble"],[/park|garden/i,"Trees"]],Dt=(e,t)=>c(wa.find(([a])=>a.test(e))?.[1]??"KeyRound",t),P=3,f={all:[],compare:[],concierge:{open:!1,thread:[],busy:!1},menu:!1,lightbox:null,avail:{},modal:null};try{f.compare=JSON.parse(localStorage.getItem("go-poc-compare")||"[]")}catch{f.compare=[]}var ka=()=>{try{localStorage.setItem("go-poc-compare",JSON.stringify(f.compare))}catch{}},re=e=>f.all.find(t=>t.id===e),va=["2 bedrooms near Liverpool Street for 4 people","Family apartment near Hyde Park","Corporate stay near Canary Wharf","Central London apartment for 5 nights"];function Ut(e,t){let a=e.trim().length>3?N(V(e)):[];return a.length?`<div class="flex flex-wrap items-center gap-2 text-[13px] animate-rise"><span class="text-ink-muted">Reading this as</span>${a.map(r=>`<span class="rounded-plate bg-door-tint px-2 py-1 text-door"><span class="opacity-70">${p(r.label)}:</span> ${p(r.value)}</span>`).join("")}</div>`:t?`<div class="flex flex-wrap items-center gap-2 text-[14px]"><span class="text-ink-muted">Try</span>${va.map(r=>`<a href="${B(r)}" class="rounded-full border border-stone-line bg-paper px-3 py-1 text-ink-soft transition-colors hover:border-door hover:text-door">${p(r)}</a>`).join("")}</div>`:""}var Ca=0;function te({initial:e="",hero:t=!0}={}){let a=`sq${++Ca}`;return`<form role="search" data-form="search" class="w-full">
+    <label for="${a}" class="${t?"mb-3 block font-serif text-lg text-ink":"sr-only"}">What kind of apartment are you looking for?</label>
+    <div class="${g("flex flex-col gap-2 rounded-card border border-ink/20 bg-paper p-2 shadow-lift transition-colors focus-within:border-door sm:flex-row sm:items-center",t&&"sm:p-2.5")}">
+      <div class="flex flex-1 items-center gap-3 px-2">${c("Search","h-5 w-5 shrink-0 text-ink-muted")}
+        <input id="${a}" name="q" value="${p(e)}" data-live="${a}c" data-hero="${t?1:0}" autocomplete="off"
+          placeholder="e.g. 2 bedrooms near Liverpool Street for 4 people, 5 nights"
+          class="${g("w-full bg-transparent py-2 text-ink outline-none placeholder:text-ink-muted/70",t?"text-[17px] sm:text-lg":"text-base")}">
+      </div>
+      <button type="submit" class="${w("primary",t?"lg":"md","w-full sm:w-auto")}">Find my apartment</button>
+    </div>
+    <div id="${a}c" class="mt-3 min-h-[28px]" aria-live="polite">${Ut(e,t)}</div>
+  </form>`}function oe(e,t=""){let a=f.compare.includes(e.id),r=!a&&f.compare.length>=P;return`<button type="button" data-act="compare" data-id="${e.id}" aria-pressed="${a}" ${r?"disabled":""}
+    aria-label="${a?"Remove":"Add"} ${p(e.name)} ${a?"from":"to"} comparison" title="${r?"You can compare up to 3 apartments":""}"
+    class="${g("inline-flex h-9 items-center gap-1.5 rounded-control border px-3 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-40",a?"border-door bg-door-tint text-door":"border-ink/15 text-ink-soft hover:border-ink/40",t)}">
+    ${c(a?"Check":"Plus","h-4 w-4")}${a?"Comparing":"Compare"}</button>`}function ft(e){return`<article class="flex flex-col">
+    <a href="${$(e)}" class="relative block aspect-[4/3] overflow-hidden rounded-card" tabindex="-1" aria-hidden="true">${A(e,0,"absolute inset-0 h-full w-full")}</a>
+    <div class="mt-4 flex items-start justify-between gap-3"><div class="min-w-0">
+      <h3 class="text-[22px] leading-snug"><a href="${$(e)}" class="hover:text-door">${p(e.name)}</a></h3>
+      <p class="mt-1 flex items-center gap-1 text-sm text-ink-muted">${c("MapPin","h-3.5 w-3.5")}${p(e.location)}</p></div>
+      ${e.priceFrom?`<p class="shrink-0 text-right text-sm text-ink-muted">from <span class="block font-display text-lg text-ink">${z(e.priceFrom)}</span></p>`:""}
+    </div>
+    <p class="mt-2 text-[15px] text-ink-soft">${D(e.bedrooms)}, sleeps ${e.sleeps}, ${e.suitableFor.slice(0,2).join(" and ").toLowerCase()} stays</p>
+    <div class="mt-3">${oe(e)}</div>
+  </article>`}var S={west:-.205,east:.006,south:51.482,north:51.54},ae=800,dt=Math.round(ae*((S.north-S.south)/((S.east-S.west)*Math.cos(51.51*Math.PI/180)))),G=(e,t)=>({x:(t-S.west)/(S.east-S.west)*ae,y:(S.north-e)/(S.north-S.south)*dt}),$a=[[-.215,51.482],[-.19,51.479],[-.168,51.482],[-.145,51.486],[-.13,51.49],[-.123,51.497],[-.121,51.504],[-.116,51.509],[-.105,51.51],[-.09,51.508],[-.075,51.506],[-.058,51.505],[-.042,51.507],[-.033,51.503],[-.03,51.494],[-.022,51.486],[-.01,51.487],[-.004,51.496],[0,51.503],[.01,51.507]],Sa=$a.map(([e,t],a)=>{let{x:r,y:o}=G(t,e);return`${a?"L":"M"}${r.toFixed(1)},${o.toFixed(1)}`}).join(" "),lt=(e,t,a,r)=>{let o=G(r,e),s=G(t,a);return{x:o.x,y:o.y,width:s.x-o.x,height:s.y-o.y}},Aa=[{name:"Hyde Park",...lt(-.19,51.502,-.152,51.512)},{name:"Regent's Park",...lt(-.163,51.522,-.146,51.534)},{name:"Green Park",...lt(-.148,51.5,-.139,51.506)}],Ma=[["The City",51.5135,-.092],["West End",51.5145,-.137],["Canary Wharf",51.4995,-.018],["King's Cross",51.536,-.125],["South Bank",51.4985,-.105],["Marylebone",51.521,-.172]];function se(e,{highlightId:t,numbered:a=!1,label:r="Map of central London showing apartment locations",extra:o=""}={}){let s=e.filter(n=>n.latitude!==void 0&&n.longitude!==void 0),l=e.length-s.length;return`<figure class="${g("overflow-hidden rounded-card border border-stone-line bg-stone",o)}">
+    <svg viewBox="0 0 ${ae} ${dt}" role="img" aria-label="${p(r)}" class="block h-auto w-full">
+      <rect width="${ae}" height="${dt}" class="fill-stone"/>
+      ${Aa.map(n=>`<rect x="${n.x}" y="${n.y}" width="${n.width}" height="${n.height}" rx="10" class="map-park"/><text x="${n.x+n.width/2}" y="${n.y+n.height/2+4}" text-anchor="middle" font-size="11" class="map-park-t">${n.name}</text>`).join("")}
+      <path d="${Sa}" fill="none" class="map-river" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+      ${Ma.map(([n,d,u])=>{let{x:h,y:m}=G(d,u);return`<text x="${h}" y="${m}" text-anchor="middle" font-size="12" font-style="italic" class="map-label">${n}</text>`}).join("")}
+      ${s.map(n=>{let{x:d,y:u}=G(n.latitude,n.longitude),h=n.id===t;return`<g transform="translate(${d.toFixed(1)},${u.toFixed(1)})"><title>${p(n.name)}</title>
+          <circle r="${h?15:12}" class="${h?"map-pin-hot":"map-pin"}" stroke-width="2"/>
+          ${a?`<text y="4" text-anchor="middle" font-size="11" font-weight="600" class="${h?"map-num-hot":"map-num"}">${e.indexOf(n)+1}</text>`:`<circle r="4" class="${h?"map-dot-hot":"map-dot"}"/>`}
+          ${h?`<text y="-22" text-anchor="middle" font-size="13" font-weight="600" class="map-callout" stroke-width="4" paint-order="stroke">${p(n.name)}</text>`:""}</g>`}).join("")}
+    </svg>
+    <figcaption class="flex flex-wrap justify-between gap-2 border-t border-stone-line bg-paper px-4 py-2.5 text-[12px] text-ink-muted">
+      <span>Stylised map. Positions from structured coordinates.</span>
+      ${l>0?`<span class="text-brick">${l} apartment${l>1?"s":""} missing coordinates</span>`:""}
+    </figcaption></figure>`}var Fa=["Real-time availability","Dynamic pricing","CRM integration","PMS integration","Booking engine","Guest portal","AI customer service","Automated enquiries","Analytics","Personalised recommendations"];function O(e,t,a,{dark:r=!1,inPoc:o=!0}={}){return`<div class="${g("relative rounded-card border p-5",r?"border-door bg-door text-white":o?"border-stone-line bg-paper":"border-dashed border-ink/25 bg-stone")}">
+    ${c(e,g("h-5 w-5",r?"text-[#EFE5D3]":"text-brass"))}
+    <p class="${g("mt-3 font-display text-xl leading-snug",r?"text-white":"text-ink")}">${t}</p>
+    <p class="${g("mt-1.5 text-[14px] leading-relaxed",r?"text-white/80":"text-ink-muted")}">${a}</p>
+    ${o?"":'<p class="mt-3 text-[12px] font-medium text-brass-deep">Future roadmap</p>'}</div>`}var it='<div aria-hidden="true" class="mx-auto h-8 w-px bg-ink/20"></div>';function zt(e=!1){return`<div><div class="mx-auto max-w-3xl" role="img" aria-label="Diagram: unified property data powers the website, AI and search, and the admin portal, which connect to a future booking engine and CRM, PMS and channel integrations.">
+    ${O("Database","Unified property data","Every apartment described once, in one structured format: location, rooms, capacity, amenities, suitability, content.",{dark:!0})}
+    ${it}
+    <div class="relative grid gap-4 sm:grid-cols-3"><div aria-hidden="true" class="absolute -top-4 left-[16.6%] right-[16.6%] hidden h-px bg-ink/20 sm:block"></div>
+      ${O("Globe","Website","Search, results, apartment pages and comparison.")}
+      ${O("Search","AI &amp; search","Concierge, natural-language search and schema-ready pages.")}
+      ${O("LayoutDashboard","Admin portal","Data health, completeness and readiness checks.")}</div>
+    ${it}${O("CalendarClock","Booking engine","Live availability, rates and confirmed reservations.",{inPoc:!1})}
+    ${it}${O("Plug","CRM, PMS and channel integrations","Guest records, housekeeping and operations, OTA distribution.",{inPoc:!1})}
+  </div>
+  ${e?"":`<div class="mx-auto mt-14 max-w-3xl rounded-card border border-dashed border-ink/25 bg-paper p-6 sm:p-8">
+    <div class="flex flex-wrap items-baseline justify-between gap-2"><h3 class="text-2xl">Where it can go next</h3><p class="text-sm font-medium text-brass-deep">Future roadmap, not included in this POC.</p></div>
+    <ul class="mt-5 grid gap-x-8 gap-y-2.5 text-[15px] text-ink-soft sm:grid-cols-2">${Fa.map(t=>`<li class="flex items-center gap-2.5"><span aria-hidden="true" class="h-1.5 w-1.5 rounded-full border border-ink/40"></span>${t}</li>`).join("")}</ul>
+    <div class="mt-6 flex flex-wrap gap-6 border-t border-stone-line pt-5 text-[13px] text-ink-muted">
+      <span class="inline-flex items-center gap-2"><span class="h-3 w-5 rounded-sm border border-stone-line bg-paper"></span>Built in this POC</span>
+      <span class="inline-flex items-center gap-2"><span class="h-3 w-5 rounded-sm border border-dashed border-ink/30 bg-stone"></span>Roadmap</span>
+      <span class="inline-flex items-center gap-2">${c("MessageSquareText","h-3.5 w-3.5")}AI visibility still depends on external search systems</span>
+    </div></div>`}</div>`}var Pa=[{q:"2 bedroom apartment near Liverpool Street for 4 people on a business trip.",who:"Visiting team"},{q:"Family of four looking for a central London apartment near Hyde Park.",who:"Family holiday"},{q:"I need somewhere for a 10-night corporate stay.",who:"Consultant on assignment"},{q:"Which apartments are suitable for relocation?",who:"Moving to London"}],La=[{title:"Tell us what you need",body:"Write it the way you'd say it to our reservations team: who's coming, where you need to be, how long you're staying."},{title:"We match it to every apartment",body:"Your request is checked against each apartment's location, rooms, capacity, amenities and minimum stay."},{title:"Compare and request",body:"See why each apartment fits, compare up to three side by side, and send a booking request."}];async function Ba(){let e=f.all,t=e.find(a=>a.slug==="196-bishopsgate");return{title:"Go Apartments: find the right London apartment",html:`
+    <section class="border-b border-stone-line bg-stone">
+      <div class="page grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14 lg:py-20">
+        <div class="animate-rise">
+          <p class="font-serif text-[15px] italic text-ink-muted">Serviced apartments across London</p>
+          <h1 class="mt-4 max-w-[14ch] text-[44px] leading-[1.02] sm:text-[64px] lg:text-[76px]">Find the right London apartment in seconds.</h1>
+          <p class="mt-6 max-w-[52ch] text-lg leading-relaxed text-ink-soft">Tell us what you need. Our property concierge will find apartments that match your location, dates, group size and reason for travelling.</p>
+          <div class="mt-9 max-w-2xl">${te()}</div>
+        </div>
+        ${t?`<figure class="relative">
+          <div class="relative aspect-[4/5] overflow-hidden rounded-card">${A(t,0,"absolute inset-0 h-full w-full",`Illustration of the living room at ${t.name}`)}</div>
+          <figcaption class="absolute -bottom-6 left-4 right-4 rounded-card bg-paper p-4 shadow-panel sm:left-auto sm:right-[-12px] sm:w-72">
+            <p class="text-[12px] text-ink-muted">Asked for 2 bedrooms near Liverpool Street?</p>
+            <a href="${$(t)}" class="mt-1 block font-display text-xl hover:text-door">${t.name}</a>
+            <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[13px] text-ink-soft">
+              <span class="inline-flex items-center gap-1">${c("MapPin","h-3.5 w-3.5")}${t.nearbyTransport[0].walkMinutes} min to ${t.nearbyTransport[0].name}</span>
+              <span class="inline-flex items-center gap-1">${c("BedDouble","h-3.5 w-3.5")}${D(t.bedrooms)}</span>
+              <span class="inline-flex items-center gap-1">${c("Users","h-3.5 w-3.5")}Sleeps ${t.sleeps}</span>
+            </div></figcaption></figure>`:""}
+      </div>
+    </section>
+
+    <section class="page py-20 sm:py-24" aria-labelledby="how">
+      <h2 id="how" class="max-w-[20ch] text-[36px] leading-tight sm:text-[44px]">From a sentence to the right apartment</h2>
+      <ol class="mt-12 grid gap-10 md:grid-cols-3">${La.map((a,r)=>`<li class="border-t border-ink pt-5"><span class="font-display text-[40px] leading-none text-brass">${r+1}</span><h3 class="mt-4 font-sans text-lg font-semibold">${a.title}</h3><p class="mt-2 max-w-[38ch] text-[15px] leading-relaxed text-ink-soft">${a.body}</p></li>`).join("")}</ol>
+    </section>
+
+    <section class="bg-door text-white" aria-labelledby="scenarios">
+      <div class="page py-16 sm:py-20">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <h2 id="scenarios" class="max-w-[22ch] text-[34px] leading-tight text-white sm:text-[40px]">Real requests, different answers</h2>
+          <p class="max-w-md text-[15px] text-white/75">Each request is interpreted and matched against the same property data, and each returns a different shortlist.</p>
+        </div>
+        <ul class="mt-10 grid gap-4 sm:grid-cols-2">${Pa.map(a=>`<li><a href="${B(a.q)}" class="block h-full rounded-card border border-white/20 p-6 transition-colors hover:border-[#EFE5D3] hover:bg-white/5">
+          <p class="text-[13px] text-[#EFE5D3]">${a.who}</p><p class="mt-2 font-serif text-xl leading-snug text-white">&ldquo;${p(a.q)}&rdquo;</p>
+          <p class="mt-4 text-sm text-white/75 underline underline-offset-4">See the shortlist</p></a></li>`).join("")}</ul>
+      </div>
+    </section>
+
+    <section class="page py-20 sm:py-24" aria-labelledby="featured">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <h2 id="featured" class="text-[36px] leading-tight sm:text-[44px]">Apartments across London</h2>
+        <a href="#/apartments" class="${w("secondary")}">View all ${e.length} apartments</a>
+      </div>
+      <div class="mt-10 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">${e.slice(0,6).map(ft).join("")}</div>
+    </section>
+
+    <section class="page pb-20 sm:pb-24" aria-labelledby="where">
+      <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+        <div><h2 id="where" class="text-[36px] leading-tight sm:text-[44px]">Where you need to be</h2>
+          <p class="mt-4 max-w-[46ch] text-[17px] leading-relaxed text-ink-soft">From the City to Kensington, Canary Wharf to King's Cross. Each apartment carries its own coordinates, transport links and nearby landmarks, which is how the concierge knows what&rsquo;s &ldquo;near Liverpool Street&rdquo;.</p>
+          <a href="#/locations" class="${w("secondary","md","mt-6")}">Explore locations</a></div>
+        ${se(e)}
+      </div>
+    </section>
+
+    <section class="border-y border-stone-line bg-stone" aria-labelledby="platform">
+      <div class="page py-20 sm:py-24">
+        <div class="mx-auto max-w-3xl text-center">
+          <h2 id="platform" class="text-[36px] leading-tight sm:text-[44px]">One source of property information</h2>
+          <p class="mx-auto mt-4 max-w-[60ch] text-[17px] leading-relaxed text-ink-soft">This prototype runs on a single structured record for each apartment. The same data drives the website, the concierge, search-ready pages and the admin view, and can later connect to booking, CRM and operations systems.</p>
+        </div>
+        <div class="mt-14">${zt()}</div>
+      </div>
+    </section>`}}var Da={location:"MapPin",bedrooms:"BedDouble",guests:"Users",purpose:"Briefcase",stay:"CalendarDays",type:"House",amenities:"Sparkle"},Tt={location:"Anywhere in London",bedrooms:"Any",guests:"Not specified",purpose:"Any",stay:"Flexible"};function Ta(e,t){let a=N(e),r=new Map(a.map(s=>[s.key,s]));return`<section aria-labelledby="understood" class="rounded-card border border-stone-line bg-paper p-5 sm:p-7">
+    <div class="flex flex-wrap items-baseline justify-between gap-3"><h2 id="understood" class="text-2xl sm:text-[28px]">We understood your requirements</h2><p class="text-sm text-ink-muted">Not quite right? Edit your request above.</p></div>
+    <dl class="mt-6 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-3 lg:grid-cols-5">${["location","bedrooms","guests","purpose","stay",...a.map(s=>s.key).filter(s=>!(s in Tt))].map(s=>{let l=r.get(s);return`<div class="min-w-0"><dt class="flex items-center gap-2 text-[13px] text-ink-muted">${c(Da[s]??"Sparkle","h-4 w-4 text-brass")}${p(l?.label??s[0].toUpperCase()+s.slice(1))}</dt>
+        <dd class="${l?"mt-1 font-display text-xl leading-snug text-ink":"mt-1 text-[15px] text-ink-muted"}">${p(l?.value??Tt[s])}</dd></div>`}).join("")}</dl>
+    <div class="mt-6 flex flex-wrap items-center gap-4 border-t border-stone-line pt-5">
+      <button type="button" data-act="scroll" data-target="results" class="${w()}">Show ${t} matching apartment${t===1?"":"s"}</button>
+      <p class="text-[13px] text-ink-muted">Understood using transparent rules on your wording, not a black box.</p>
+    </div></section>`}function Ra(e,t){let a=e.property,r=a.amenities.filter(o=>!["24/7 guest support","Smart TV","Iron & ironing board"].includes(o)).slice(0,4);return`<article class="grid overflow-hidden rounded-card border border-stone-line bg-paper md:grid-cols-[minmax(0,300px)_1fr]" aria-labelledby="r-${a.id}">
+    <a href="${$(a)}" class="relative block aspect-[4/3] md:aspect-auto" tabindex="-1" aria-hidden="true">${A(a,0,"absolute inset-0 h-full w-full")}
+      <span class="absolute left-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-[#FFFFFF] text-[13px] font-semibold text-[#1E3B34] shadow-lift">${t}</span></a>
+    <div class="flex flex-col p-5 sm:p-6">
+      <div class="flex flex-wrap items-start justify-between gap-3">${Wt(e.matchScore)}
+        ${a.priceFrom?`<p class="text-right text-sm text-ink-muted">From <span class="font-display text-xl text-ink">${z(a.priceFrom)}</span> / night<span class="block text-[12px]">Indicative demo rate</span></p>`:""}</div>
+      <h3 id="r-${a.id}" class="mt-3 text-[28px] leading-tight"><a href="${$(a)}" class="hover:text-door">${p(a.name)}</a></h3>
+      <p class="mt-1 flex items-center gap-1.5 text-[15px] text-ink-muted">${c("MapPin","h-4 w-4")} ${p(a.location)}, London
+        ${a.rating?`<span class="ml-3 inline-flex items-center gap-1">${c("Star","h-3.5 w-3.5 fill-brass text-brass")}${a.rating.toFixed(1)}<span class="sr-only"> out of 5, demo rating</span></span>`:""}</p>
+      <ul class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[15px] text-ink-soft">
+        <li class="inline-flex items-center gap-1.5">${c("BedDouble","h-4 w-4 text-ink-muted")}${D(a.bedrooms)}</li>
+        <li class="inline-flex items-center gap-1.5">${c("Bath","h-4 w-4 text-ink-muted")}${a.bathrooms} bath</li>
+        <li class="inline-flex items-center gap-1.5">${c("Users","h-4 w-4 text-ink-muted")}Sleeps ${a.sleeps}</li></ul>
+      <div class="mt-5"><p class="text-sm font-medium text-ink">Why this matches</p>
+        <ul class="mt-2 grid gap-1.5 text-[15px] text-ink-soft sm:grid-cols-2">${e.reasons.slice(0,4).map(o=>`<li class="flex gap-2"><span aria-hidden="true" class="text-door">\u2713</span>${p(o)}</li>`).join("")}</ul>
+        ${e.cautions.length?`<ul class="mt-2 space-y-1 text-[14px] text-brick">${e.cautions.map(o=>`<li class="flex gap-2"><span aria-hidden="true">!</span>${p(o)}</li>`).join("")}</ul>`:""}</div>
+      <p class="mt-4 text-[13px] text-ink-muted">${r.map(p).join("&nbsp; / &nbsp;")}</p>
+      <div class="mt-5 flex flex-wrap items-center gap-2 border-t border-stone-line pt-5">
+        <a href="${$(a)}" class="${w("primary","sm")}">View property</a>
+        <a href="${$(a,"availability")}" class="${w("secondary","sm")}">Check availability</a>
+        ${oe(a)}
+        <details class="ml-auto text-[13px] text-ink-muted"><summary class="cursor-pointer select-none underline-offset-4 hover:underline">How is this scored?</summary>
+          <div class="mt-3 min-w-[260px] rounded-control bg-stone p-3 text-ink-soft"><table class="w-full text-left"><caption class="sr-only">Match score breakdown</caption><tbody>
+            ${e.breakdown.map(o=>`<tr><th scope="row" class="py-0.5 pr-3 font-normal">${o.factor} <span class="text-ink-muted">(${Math.round(o.weight*100)}%)</span></th><td class="py-0.5 pr-3 tabular-nums">${Math.round(o.score*100)}</td><td class="py-0.5 text-ink-muted">${o.specified?p(o.note):"not specified"}</td></tr>`).join("")}
+          </tbody></table><p class="mt-2 text-[12px]">POC recommendation score based on demo matching logic.</p></div></details>
+      </div></div></article>`}async function qa(e){let t=(e.get("q")||"").slice(0,300);if(!t.trim())return{title:"Search",html:`<div class="page py-20"><h1 class="text-4xl">Describe your stay to see matching apartments</h1><div class="mt-8 max-w-2xl">${te()}</div></div>`};let{criteria:a,recommendations:r,summary:o}=await de(t);return{title:"Matching apartments",html:`<div class="bg-stone/60 pb-10">
+      <div class="border-b border-stone-line bg-paper"><div class="page py-5">${te({initial:t,hero:!1})}</div></div>
+      <div class="page pt-8">${Ta(a,r.length)}</div>
+      <section id="results" aria-labelledby="results-title" class="page scroll-mt-24 pt-12">
+        <div class="flex flex-wrap items-end justify-between gap-4"><div>
+          <h1 id="results-title" class="text-[34px] leading-tight sm:text-[40px]">Recommended for you</h1>
+          <p class="mt-2 max-w-[70ch] font-serif text-lg text-ink-soft">${p(o)}</p></div>
+          ${I("POC recommendation score based on demo matching logic")}</div>
+        <div class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px]">
+          <ol class="space-y-6">${r.map((s,l)=>`<li>${Ra(s,l+1)}</li>`).join("")}</ol>
+          <aside class="hidden lg:block" aria-label="Map of results"><div class="sticky top-28 space-y-4">
+            ${se(r.map(s=>s.property),{highlightId:r[0]?.property.id,numbered:!0,label:"Map of matching apartments, numbered by rank"})}
+            <div class="rounded-card border border-stone-line bg-paper p-5 text-[14px] leading-relaxed text-ink-soft">
+              <p class="font-medium text-ink">How matches are scored</p>
+              <p class="mt-1.5">Location 30%, capacity 20%, bedrooms 15%, purpose 15%, amenities 10%, stay length 10%. Anything you didn&rsquo;t mention counts as neutral.</p>
+              <p class="mt-2 text-[13px] text-ink-muted">A transparent POC rule set, not a machine-learning prediction.</p></div>
+          </div></aside>
+        </div>
+        <div class="mt-12 rounded-card border border-stone-line bg-paper p-6 text-center">
+          <p class="font-serif text-lg">Prefer to talk it through?</p>
+          <p class="mt-1 text-[15px] text-ink-muted">Our reservations team can hold options and arrange corporate invoicing.</p>
+          <button type="button" data-act="scroll" data-target="contact" class="${w("secondary","md","mt-4")}">Speak to our team</button>
+        </div>
+      </section></div>`}}var Rt=["Business","Family","Leisure","Relocation","Groups"];async function Ea(e){let t=Rt.find(o=>o.toLowerCase()===(e.get("for")||"").toLowerCase()),a=t?f.all.filter(o=>o.suitableFor.includes(t)):f.all,r=(o,s,l)=>`<a href="${o}" ${l?'aria-current="page"':""} class="${g("rounded-full border px-4 py-1.5 text-sm",l?"border-door bg-door text-white":"border-stone-line hover:border-ink/40")}">${s}</a>`;return{title:"All apartments",html:`<div class="page py-12 sm:py-16">
+      <h1 class="text-[40px] leading-tight sm:text-[52px]">Our London apartments</h1>
+      <p class="mt-3 max-w-[60ch] text-lg text-ink-soft">Browse everything, or describe your stay and we&rsquo;ll rank them for you.</p>
+      <div class="mt-8 max-w-2xl">${te({hero:!1})}</div>
+      <nav aria-label="Filter by type of stay" class="mt-6 flex flex-wrap gap-2">${r("#/apartments","All",!t)}${Rt.map(o=>r(`#/apartments?for=${o.toLowerCase()}`,o,t===o)).join("")}</nav>
+      <p class="mt-6 text-sm text-ink-muted">${a.length} apartment${a.length===1?"":"s"}</p>
+      <div class="mt-4 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">${a.map(ft).join("")}</div>
+    </div>`}}var Oa={Business:"Business travel",Family:"Families",Leisure:"City breaks",Relocation:"Relocation",Groups:"Groups"};async function Ha(e){let t=await bt(e);if(!t)return Vt();let a=await yt(t);if(!f.avail[t.id]){let l=await Mt(t);f.avail[t.id]={days:l.days,month:0,checkIn:null,checkOut:null,guests:Math.min(2,t.sleeps),error:null}}Ia(t);let r=l=>`${t.name}: ${J[l]??"photo "+(l+1)} (illustration)`,o=[["BedDouble","Bedrooms",D(t.bedrooms)],["Bath","Bathrooms",String(t.bathrooms)],["Users","Sleeps",`Up to ${t.sleeps}`],...t.sizeSqFt?[["Maximize","Size",`${t.sizeSqFt.toLocaleString("en-GB")} sq ft`]]:[]],s=(l,n,d,u)=>`<div><h3 class="flex items-center gap-2 font-sans text-base font-semibold">${c(l,"h-4 w-4 text-brass")}${n}</h3>
+    ${d.length?`<ul class="mt-3 space-y-2.5 text-[15px] text-ink-soft">${d.join("")}</ul>`:`<p class="mt-3 text-[15px] text-ink-muted">${u}</p>`}</div>`;return{title:`${t.name}, ${t.location}`,html:`<div class="page pt-6">
+      <nav aria-label="Breadcrumb" class="text-sm text-ink-muted"><a href="#/apartments" class="inline-flex items-center gap-1 hover:text-ink">${c("ChevronLeft","h-4 w-4")}All apartments</a></nav>
+      <header class="mt-5 flex flex-wrap items-end justify-between gap-6"><div class="min-w-0">
+        <p class="font-serif text-[15px] italic text-ink-muted">${t.brand}</p>
+        <h1 class="mt-2 text-[40px] leading-[1.05] sm:text-[56px]">${p(t.name)}</h1>
+        <p class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[15px] text-ink-soft">
+          <span class="inline-flex items-center gap-1.5">${c("MapPin","h-4 w-4 text-ink-muted")}${p(t.location)}, London ${t.postcode.split(" ")[0]}</span>
+          ${t.rating?`<span class="inline-flex items-center gap-1.5">${c("Star","h-4 w-4 fill-brass text-brass")}${t.rating.toFixed(1)} <span class="text-ink-muted">(${t.reviewCount} demo reviews)</span></span>`:""}</p></div>
+        <div class="flex items-center gap-2">${oe(t)}
+          <button type="button" data-act="concierge-open" data-q="Apartments near ${p(t.location)}" class="${w("secondary","sm")}">${c("Sparkles","h-4 w-4 text-brass")}Similar nearby</button></div>
+      </header>
+
+      <div class="mt-8 grid gap-2 sm:grid-cols-4 sm:grid-rows-2">
+        <button type="button" data-act="lightbox" data-slug="${t.slug}" data-i="0" class="relative aspect-[4/3] overflow-hidden rounded-card sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:min-h-[460px]" aria-label="Open gallery">${A(t,0,"absolute inset-0 h-full w-full",r(0))}</button>
+        ${t.images.slice(1,5).map((l,n)=>`<button type="button" data-act="lightbox" data-slug="${t.slug}" data-i="${n+1}" class="relative hidden aspect-[4/3] overflow-hidden rounded-card sm:block" aria-label="Open photo ${n+2}">${A(t,n+1,"absolute inset-0 h-full w-full",r(n+1))}</button>`).join("")}
+      </div>
+      <div class="mt-3 flex flex-wrap items-center justify-between gap-2">
+        <button type="button" data-act="lightbox" data-slug="${t.slug}" data-i="0" class="inline-flex items-center gap-2 text-sm text-ink-soft underline-offset-4 hover:underline">${c("Expand","h-4 w-4")} View all ${t.images.length} images</button>
+        <p class="text-[12px] text-ink-muted">Illustrations stand in for property photography in this demo.</p>
+      </div>
+    </div>
+
+    <div class="page mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16">
+      <div class="min-w-0 space-y-16">
+        <section aria-labelledby="overview"><h2 id="overview" class="sr-only">Property overview</h2>
+          <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-card border border-stone-line bg-stone-line sm:grid-cols-4">${o.map(([l,n,d])=>`<div class="bg-paper p-4"><dt class="flex items-center gap-2 text-[13px] text-ink-muted">${c(l,"h-4 w-4 text-brass")}${n}</dt><dd class="mt-1 font-display text-xl">${d}</dd></div>`).join("")}</dl>
+          <p class="mt-8 max-w-[34ch] font-display text-[28px] leading-snug">${p(t.headline)}</p>
+          <p class="prose-serif mt-5 max-w-[68ch]">${p(t.description)}</p>
+          <div class="mt-6 flex flex-wrap gap-2">${t.suitableFor.map(l=>`<span class="rounded-full border border-door/25 bg-door-tint px-3 py-1 text-sm text-door">${Oa[l]}</span>`).join("")}</div>
+        </section>
+
+        <section aria-labelledby="why"><h2 id="why" class="text-[32px] leading-tight">Why guests choose it</h2>
+          <ul class="mt-6 grid gap-4 sm:grid-cols-2">${t.features.map(l=>`<li class="flex gap-4 rounded-card border border-stone-line p-5"><span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-stone">${Dt(l,"h-5 w-5 text-door")}</span><span class="self-center text-[16px] leading-snug">${p(l)}</span></li>`).join("")}</ul>
+        </section>
+
+        <section aria-labelledby="amenities"><h2 id="amenities" class="text-[32px] leading-tight">Amenities</h2>
+          <ul class="mt-6 grid grid-cols-1 gap-x-8 gap-y-3.5 sm:grid-cols-2 lg:grid-cols-3">${t.amenities.map(l=>`<li class="flex items-center gap-3 text-[15px] text-ink-soft">${Dt(l,"h-5 w-5 shrink-0 text-ink-muted")}${p(l)}</li>`).join("")}</ul>
+        </section>
+
+        <section aria-labelledby="location"><h2 id="location" class="text-[32px] leading-tight">Location</h2>
+          <p class="mt-2 text-[15px] text-ink-muted">${p(t.address)}, ${t.postcode}</p>
+          ${se(f.all,{highlightId:t.id,extra:"mt-6",label:`Map showing ${t.name} in ${t.location}`})}
+          <div class="mt-10 grid gap-10 sm:grid-cols-3">
+            ${s("TrainFront","Transport",t.nearbyTransport.map(l=>`<li class="flex justify-between gap-3 border-b border-stone-line pb-2.5 text-ink"><span>${p(l.name)} <span class="block text-[13px] text-ink-muted">${l.mode}</span></span><span class="shrink-0 tabular-nums text-ink-muted">${l.walkMinutes} min walk</span></li>`),"")}
+            ${s("Landmark","Nearby",t.nearbyAttractions.map(l=>`<li class="border-b border-stone-line pb-2.5">${p(l)}</li>`),"Local guide coming soon.")}
+            ${s("Building","Business districts",t.businessDistricts.map(l=>`<li class="border-b border-stone-line pb-2.5">${p(l)}</li>`),"Not listed.")}
+          </div>
+        </section>
+
+        <section aria-labelledby="stay"><h2 id="stay" class="text-[32px] leading-tight">Stay information</h2>
+          <dl class="mt-6 grid gap-6 rounded-card bg-stone p-6 sm:grid-cols-3">
+            <div><dt class="flex items-center gap-2 text-[13px] text-ink-muted">${c("Clock","h-4 w-4")}Check-in</dt><dd class="mt-1 font-display text-2xl">From ${t.checkIn}</dd></div>
+            <div><dt class="flex items-center gap-2 text-[13px] text-ink-muted">${c("Clock","h-4 w-4")}Check-out</dt><dd class="mt-1 font-display text-2xl">By ${t.checkOut}</dd></div>
+            <div><dt class="flex items-center gap-2 text-[13px] text-ink-muted">${c("CalendarRange","h-4 w-4")}Minimum stay</dt><dd class="mt-1 font-display text-2xl">${t.minimumStay} nights</dd></div>
+          </dl>
+          <p class="mt-4 max-w-[70ch] text-[14px] text-ink-muted">Longer stays and corporate rates can be arranged with our reservations team. All details on this page are demo content for the proof of concept.</p>
+        </section>
+      </div>
+      <aside id="availability" aria-labelledby="availability-title" class="scroll-mt-28"><div class="lg:sticky lg:top-28" id="avail" data-slug="${t.slug}">${Gt(t)}</div></aside>
+    </div>
+
+    ${a.length?`<section class="page mt-24" aria-labelledby="similar"><div class="flex flex-wrap items-end justify-between gap-3"><h2 id="similar" class="text-[32px] leading-tight">You might also consider</h2>${I()}</div>
+      <div class="mt-8 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">${a.map(ft).join("")}</div></section>`:""}`}}function Ia(e){document.getElementById("jsonld")?.remove();let t=document.createElement("script");t.type="application/ld+json",t.id="jsonld",t.textContent=JSON.stringify(pe(e)),document.head.appendChild(t)}var Wa=["Mo","Tu","We","Th","Fr","Sa","Su"];function Gt(e){let t=f.avail[e.id],a=new Map(t.days.map(y=>[y.date,y])),r=new Date,o=new Date(r.getFullYear(),r.getMonth()+t.month,1),s=(o.getDay()+6)%7,l=new Date(o.getFullYear(),o.getMonth()+1,0).getDate(),n=Array(s).fill(null);for(let y=1;y<=l;y++)n.push(K(new Date(o.getFullYear(),o.getMonth(),y)));let d=o.toLocaleDateString("en-GB",{month:"long",year:"numeric"}),u=t.checkIn&&t.checkOut?At(t.checkIn,t.checkOut):0,h=t.checkIn&&t.checkOut?t.days.filter(y=>y.date>=t.checkIn&&y.date<t.checkOut).reduce((y,mt)=>y+(mt.rate??0),0):0,m=u>=e.minimumStay,b=n.map((y,mt)=>{if(!y)return"<div></div>";let T=a.get(y)?.status??"past",ne=y===t.checkIn||y===t.checkOut,Kt=t.checkIn&&!t.checkOut&&y>t.checkIn,ct=T==="past"||T==="booked"&&!Kt,Xt=t.checkIn&&t.checkOut&&y>t.checkIn&&y<t.checkOut;return`<button type="button" data-act="cal-day" data-date="${y}" ${ct?"disabled":""} aria-pressed="${ne}"
+      aria-label="${F(y,{weekday:"long",day:"numeric",month:"long"})}, ${T==="booked"?"booked":T==="past"?"unavailable":"available"}"
+      class="${g("aspect-square rounded-control tabular-nums transition-colors",T==="booked"&&"text-ink/30 line-through",T==="past"&&"text-ink/20",!ct&&!ne&&"hover:bg-door-tint",Xt&&"bg-door-tint text-door",ne&&"bg-door font-semibold text-white")}">${Number(y.slice(8))}</button>`}).join(""),k='<p class="text-ink-muted">Select your check-in date.</p>';return t.checkIn&&!t.checkOut&&(k=`<p class="text-ink-muted">Check-in ${F(t.checkIn)}. Now select check-out.</p>`),t.checkIn&&t.checkOut&&(k=`<p><span class="text-ink-muted">Dates</span> ${F(t.checkIn,{day:"numeric",month:"short"})} to ${F(t.checkOut)}</p>
+      <p class="mt-1"><span class="text-ink-muted">Stay</span> ${u} night${u>1?"s":""}, ${t.guests} guest${t.guests>1?"s":""}</p>
+      ${h?`<p class="mt-1"><span class="text-ink-muted">Indicative total</span> <span class="font-semibold">${z(h)}</span> <span class="text-[12px] text-ink-muted">(demo, excl. fees)</span></p>`:""}
+      ${m?"":`<p class="mt-2 text-brick">Minimum stay is ${e.minimumStay} nights.</p>`}`),`<div class="rounded-card border border-stone-line bg-paper p-5 shadow-lift sm:p-6">
+    <div class="flex flex-wrap items-center justify-between gap-2"><h2 id="availability-title" class="text-2xl">Availability</h2>${I("POC Demo Availability")}</div>
+    ${e.priceFrom?`<p class="mt-2 text-sm text-ink-muted">From <span class="font-display text-xl text-ink">${z(e.priceFrom)}</span> per night, indicative demo rate</p>`:'<p class="mt-2 text-sm text-ink-muted">Rates on request</p>'}
+    <div class="mt-5"><div class="flex items-center justify-between">
+      <button type="button" data-act="cal-prev" ${t.month===0?"disabled":""} class="rounded-control p-2 hover:bg-stone disabled:opacity-30" aria-label="Previous month">${c("ChevronLeft","h-4 w-4")}</button>
+      <p class="font-medium" aria-live="polite">${d}</p>
+      <button type="button" data-act="cal-next" ${t.month===3?"disabled":""} class="rounded-control p-2 hover:bg-stone disabled:opacity-30" aria-label="Next month">${c("ChevronRight","h-4 w-4")}</button></div>
+      <div class="mt-3 grid grid-cols-7 gap-1 text-center text-sm">${Wa.map(y=>`<div class="pb-1 text-[12px] text-ink-muted" aria-hidden="true">${y}</div>`).join("")}${b}</div>
+      <div class="mt-3 flex gap-4 text-[12px] text-ink-muted"><span class="inline-flex items-center gap-1.5"><span class="h-3 w-3 rounded-sm border border-ink/20"></span>Available</span><span class="inline-flex items-center gap-1.5"><span class="text-ink/30 line-through">12</span>Booked (demo)</span></div>
+    </div>
+    <div class="mt-5 flex items-center justify-between border-t border-stone-line pt-5">
+      <p id="guests-label" class="text-[15px]">Guests <span class="text-ink-muted">(max ${e.sleeps})</span></p>
+      <div class="flex items-center gap-3" role="group" aria-labelledby="guests-label">
+        <button type="button" data-act="guests" data-d="-1" ${t.guests<=1?"disabled":""} class="rounded-full border border-ink/20 p-1.5 disabled:opacity-30" aria-label="Fewer guests">${c("Minus","h-4 w-4")}</button>
+        <span class="w-5 text-center tabular-nums" aria-live="polite">${t.guests}</span>
+        <button type="button" data-act="guests" data-d="1" ${t.guests>=e.sleeps?"disabled":""} class="rounded-full border border-ink/20 p-1.5 disabled:opacity-30" aria-label="More guests">${c("Plus","h-4 w-4")}</button></div>
+    </div>
+    <div class="mt-5 rounded-control bg-stone p-4 text-[15px]" aria-live="polite">${k}${t.error?`<p class="mt-2 text-brick">${t.error}</p>`:""}</div>
+    <button type="button" data-act="request" ${!t.checkIn||!t.checkOut||!m?"disabled":""} class="${w("primary","lg","mt-5 w-full")}">Request to Book</button>
+    <button type="button" data-act="scroll" data-target="contact" class="${w("secondary","md","mt-2 w-full")}">Speak to our team</button>
+    <p class="mt-3 text-center text-[12px] text-ink-muted">You won&rsquo;t be charged. Demo calendar, not connected to live bookings.</p>
+  </div>`}var nt=e=>t=>t.suitableFor.includes(e)?`<span class="inline-flex items-center gap-1.5 text-door">${c("Check","h-4 w-4")}Suitable</span>`:`<span class="inline-flex items-center gap-1.5 text-ink-muted">${c("Minus","h-4 w-4")}Not listed</span>`,H=e=>t=>{let a=Math.max(...t.map(e)),r=t.filter(o=>e(o)===a);return r.length===1?r[0].id:void 0},qt=e=>[...e.nearbyTransport].sort((t,a)=>t.walkMinutes-a.walkMinutes)[0],Ua=[{label:"Bedrooms",r:e=>D(e.bedrooms),best:H(e=>e.bedrooms)},{label:"Bathrooms",r:e=>e.bathrooms,best:H(e=>e.bathrooms)},{label:"Sleeps",r:e=>`Up to ${e.sleeps}`,best:H(e=>e.sleeps)},{label:"Location",r:e=>`${p(e.location)}<span class="block text-[13px] text-ink-muted">${e.zone}</span>`},{label:"Nearest station",r:e=>{let t=qt(e);return t?`${p(t.name)}<span class="block text-[13px] text-ink-muted">${t.walkMinutes} min walk, ${t.mode}</span>`:"Not listed"},best:H(e=>-(qt(e)?.walkMinutes??99))},{label:"Amenities",r:e=>`<span class="font-medium">${e.amenities.length} listed</span><span class="mt-1 block text-[13px] leading-relaxed text-ink-muted">${p(e.amenities.slice(0,5).join(", "))}${e.amenities.length>5?"\u2026":""}</span>`,best:H(e=>e.amenities.length)},{label:"Minimum stay",r:e=>`${e.minimumStay} nights`,best:H(e=>-e.minimumStay)},{label:"From (demo rate)",r:e=>e.priceFrom?`${z(e.priceFrom)} / night`:"On request"},{label:"Business suitability",r:nt("Business")},{label:"Family suitability",r:nt("Family")},{label:"Relocation suitability",r:nt("Relocation")}];async function za(){let e=f.compare.map(re).filter(Boolean),t=f.all.filter(l=>!f.compare.includes(l.id)),a=P-e.length,r=e.length>=P,o=(l,n)=>Array.from({length:a},()=>`<${l} class="${n}"></${l}>`).join(""),s=e.length===0?'<p class="mt-10 rounded-card border border-dashed border-ink/25 p-8 text-center text-ink-soft">Add apartments below to start comparing. You can also use the Compare button on any apartment.</p>':`<div class="mt-10 overflow-x-auto rounded-card border border-stone-line bg-paper"><table class="w-full min-w-[720px] border-collapse text-left text-[15px]">
+      <caption class="sr-only">Comparison of ${e.length} apartments</caption>
+      <thead><tr class="align-top"><th scope="col" class="w-[190px] bg-stone p-4 text-[13px] font-normal text-ink-muted">Feature</th>
+        ${e.map(l=>`<th scope="col" class="border-l border-stone-line p-4 font-normal"><div class="relative aspect-[16/10] overflow-hidden rounded-control">${A(l,0,"absolute inset-0 h-full w-full")}
+          <button type="button" data-act="compare" data-id="${l.id}" class="absolute right-2 top-2 rounded-full bg-[#FFFFFF] p-1.5 text-[#1A1D1F] shadow-lift" aria-label="Remove ${p(l.name)}">${c("X","h-4 w-4")}</button></div>
+          <a href="${$(l)}" class="mt-3 block font-display text-[22px] leading-snug hover:text-door">${p(l.name)}</a><p class="text-[13px] text-ink-muted">${l.brand}</p></th>`).join("")}
+        ${Array.from({length:a},()=>'<th scope="col" class="border-l border-stone-line p-4 align-middle font-normal"><p class="rounded-control border border-dashed border-ink/20 p-6 text-center text-[14px] text-ink-muted">Add an apartment from the list below</p></th>').join("")}
+      </tr></thead>
+      <tbody>${Ua.map(l=>{let n=e.length>1?l.best?.(e):void 0;return`<tr class="border-t border-stone-line align-top"><th scope="row" class="bg-stone p-4 text-[14px] font-medium">${l.label}</th>
+          ${e.map(d=>`<td class="${g("border-l border-stone-line p-4",n===d.id&&"bg-door-tint")}">${l.r(d)}${n===d.id?'<span class="mt-1 block text-[12px] font-medium text-door">Best of selection</span>':""}</td>`).join("")}
+          ${o("td","border-l border-stone-line")}</tr>`}).join("")}
+      <tr class="border-t border-stone-line"><th scope="row" class="bg-stone p-4"></th>${e.map(l=>`<td class="border-l border-stone-line p-4"><div class="flex flex-wrap gap-2"><a href="${$(l)}" class="${w("primary","sm")}">View apartment</a><a href="${$(l,"availability")}" class="${w("secondary","sm")}">Check availability</a></div></td>`).join("")}${o("td","border-l border-stone-line")}</tr>
+      </tbody></table></div>`;return{title:"Compare apartments",html:`<div class="page py-12 sm:py-16">
+      <div class="flex flex-wrap items-end justify-between gap-4"><div>
+        <h1 class="text-[40px] leading-tight sm:text-[52px]">Compare apartments</h1>
+        <p class="mt-3 max-w-[60ch] text-lg text-ink-soft">Side by side, from the same structured details. Choose up to ${P}.</p></div>
+        <div class="flex items-center gap-3">${I()}${e.length?'<button type="button" data-act="compare-clear" class="text-sm text-ink-muted underline-offset-4 hover:underline">Clear all</button>':""}</div></div>
+      ${s}
+      <section class="mt-16" aria-labelledby="add"><h2 id="add" class="text-[28px]">${r?"Swap an apartment":"Add apartments"}</h2>
+        ${r?`<p class="mt-1 text-[15px] text-ink-muted">You&rsquo;re comparing ${P}. Remove one to add another.</p>`:""}
+        <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">${t.map(l=>`<li class="flex items-center gap-4 rounded-card border border-stone-line bg-paper p-3">${A(l,0,"h-16 w-20 shrink-0 rounded-plate")}
+          <div class="min-w-0 flex-1"><p class="truncate font-display text-lg">${p(l.name)}</p><p class="text-[13px] text-ink-muted">${p(l.location)}, ${D(l.bedrooms).toLowerCase()}, sleeps ${l.sleeps}</p></div>
+          <button type="button" data-act="compare" data-id="${l.id}" ${r?"disabled":""} class="${w("secondary","sm","px-2.5")}" aria-label="Add ${p(l.name)} to comparison">${c("Plus","h-4 w-4")}</button></li>`).join("")}</ul>
+      </section></div>`}}async function Ga(){return{title:"Locations",html:`<div class="page py-12 sm:py-16">
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end"><div>
+        <h1 class="text-[40px] leading-tight sm:text-[52px]">Where we are in London</h1>
+        <p class="mt-4 max-w-[48ch] text-lg leading-relaxed text-ink-soft">Six neighbourhoods, each suited to a different kind of stay. Choose one to see the apartments ranked for it.</p></div>
+        ${se(f.all)}</div>
+      <ul class="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">${vt.map(e=>{let t=f.all.filter(a=>a.zone===e.zone);return`<li><a href="${B(e.query)}" class="group block"><div class="relative aspect-[3/2] overflow-hidden rounded-card">${t[0]?A(t[0],0,"absolute inset-0 h-full w-full"):""}</div>
+          <h2 class="mt-4 text-[24px] leading-snug group-hover:text-door">${e.label}</h2><p class="mt-1.5 text-[15px] leading-relaxed text-ink-soft">${e.blurb}</p>
+          <p class="mt-2 text-sm text-ink-muted">${t.length} apartment${t.length===1?"":"s"}: ${p(t.map(a=>a.name).join(", ")||"coming soon")}</p></a></li>`}).join("")}</ul></div>`}}async function ja(){return{title:"About",html:`<div class="page py-12 sm:py-20"><div class="max-w-3xl">
+      <h1 class="text-[40px] leading-tight sm:text-[52px]">Serviced apartments, run by people who know London</h1>
+      <p class="prose-serif mt-6">Go London Apartments and Go City Apartments look after serviced apartments across the capital, from the City and Canary Wharf to Kensington and the West End. Guests stay for a few nights or a few months: visiting teams, families, consultants on assignment and people relocating to a new job.</p>
+      <p class="prose-serif mt-4">This proof of concept shows how both brands could share one platform: a single, structured description of every apartment that powers search, recommendations, comparison and the tools our team uses behind the scenes.</p>
+      <div class="mt-8 rounded-card border border-brass/40 bg-brass-soft p-5 text-[15px] text-brass-deep">Brand copy on this page is placeholder text written for the prototype, not the client&rsquo;s own.</div>
+      <div class="mt-8 flex flex-wrap gap-3"><a href="#/" class="${w()}">Find an apartment</a><a href="#/platform" class="${w("secondary")}">See the platform idea</a></div>
+    </div></div>`}}function jt(e,t){let a=(r,o)=>`<a href="${r}" ${e===r?'aria-current="page"':""} class="${g("border-b-2 pb-3 text-[15px] transition-colors",e===r?"border-door text-ink":"border-transparent text-ink-muted hover:text-ink")}">${o}</a>`;return`<div class="min-h-[70vh] bg-stone pb-20"><div class="border-b border-stone-line bg-paper"><div class="page pt-8">
+    <p class="text-[13px] text-ink-muted">Staff view, Go Apartments portfolio</p>
+    <nav aria-label="Admin sections" class="mt-4 flex gap-6">${a("#/admin","Property Intelligence")}${a("#/readiness","AI &amp; Search Readiness")}</nav>
+  </div></div>${t}</div>`}var Et=(e,t="Ready",a="Needs attention")=>`<span class="${g("inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[13px]",e?"bg-door-tint text-door":"bg-brick-tint text-brick")}"><span aria-hidden="true" class="${g("h-1.5 w-1.5 rounded-full",e?"bg-door":"bg-brick")}"></span>${e?t:a}</span>`,Va=(e,t)=>`<div class="flex items-center gap-3"><div class="h-1.5 w-24 overflow-hidden rounded-full bg-stone-deep" role="meter" aria-valuenow="${e}" aria-valuemin="0" aria-valuemax="100" aria-label="${p(t)}"><div class="${g("h-full rounded-full",e===100?"bg-door":e>=85?"bg-brass":"bg-brick")}" style="width:${e}%"></div></div><span class="tabular-nums text-[14px]">${e}%</span></div>`,Na=e=>{let[t,a,r]=e.split("-").map(Number);return Math.floor((Date.now()-new Date(t,a-1,r).getTime())/864e5)};async function Ka(){let e=await fe(),t=[...e.health].sort((r,o)=>r.completeness-o.completeness),a=[{k:"Properties",v:e.total,sub:`${e.active} active, ${e.total-e.active} draft`},{k:"Complete",v:e.complete,sub:"All checks passed"},{k:"Needs attention",v:e.needsAttention,sub:"Missing structured fields",warn:e.needsAttention>0},{k:"AI-ready",v:e.aiReady,sub:"Core facts machine-readable"},{k:"Live availability feed",v:0,sub:"Not connected in POC"},{k:"Last updated",v:F(e.lastUpdated,{day:"numeric",month:"short"}),sub:"Most recent record change"}];return{title:"Property Intelligence",html:jt("#/admin",`<div class="page pt-10">
+      <div class="flex flex-wrap items-end justify-between gap-4"><div>
+        <h1 class="text-[40px] leading-tight sm:text-[48px]">Property Intelligence</h1>
+        <p class="mt-2 max-w-[62ch] text-[17px] text-ink-soft">How complete and consistent the information behind every apartment is. This is the data the website, search pages and concierge all read from.</p></div>
+        ${I(`Demo portfolio of ${e.total} apartments`)}</div>
+      <section aria-label="Portfolio summary" class="mt-10 grid gap-4 lg:grid-cols-[1.1fr_2fr]">
+        <div class="rounded-card bg-door p-7 text-white"><p class="text-[15px] text-white/80">Property data health</p>
+          <p class="mt-2 font-display text-[88px] leading-none">${e.averageCompleteness}%</p><p class="mt-3 text-[15px] text-white/80">Structured information available across the portfolio</p></div>
+        <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-card border border-stone-line bg-stone-line sm:grid-cols-3">${a.map(r=>`<div class="bg-paper p-5"><dt class="text-[13px] text-ink-muted">${r.k}</dt><dd class="${g("mt-1 font-display text-[40px] leading-none",r.warn&&"text-brick")}">${r.v}</dd><dd class="mt-2 text-[13px] text-ink-muted">${r.sub}</dd></div>`).join("")}</dl>
+      </section>
+      <section aria-labelledby="records" class="mt-12">
+        <div class="flex flex-wrap items-baseline justify-between gap-2"><h2 id="records" class="text-[28px]">Apartment records</h2><p class="text-sm text-ink-muted">Sorted by what needs attention first. Open a record&rsquo;s gaps to see what&rsquo;s missing.</p></div>
+        <div class="mt-5 overflow-x-auto rounded-card border border-stone-line bg-paper"><table class="w-full min-w-[860px] text-left text-[15px]">
+          <caption class="sr-only">Data completeness by apartment</caption>
+          <thead class="bg-stone text-[13px] text-ink-muted"><tr>${["Property","Data completeness","SEO","AI-ready","Availability","Last updated"].map(r=>`<th scope="col" class="px-5 py-3 font-medium">${r}</th>`).join("")}</tr></thead>
+          <tbody>${t.map(({property:r,completeness:o,seoReady:s,aiReady:l,missing:n})=>{let d=Na(r.lastUpdated);return`<tr class="border-t border-stone-line align-top"><th scope="row" class="px-5 py-4 font-normal">
+              ${r.status==="active"?`<a href="${$(r)}" class="font-medium hover:text-door">${p(r.name)}</a>`:`<span class="font-medium">${p(r.name)}</span>`}
+              <span class="block text-[13px] text-ink-muted">${r.brand}${r.status==="draft"?", draft":""}</span>
+              ${n.length?`<details class="mt-2 text-[13px]"><summary class="cursor-pointer text-brick underline-offset-4 hover:underline">${n.length} gap${n.length>1?"s":""}</summary><ul class="mt-2 space-y-1 text-ink-soft">${n.map(u=>`<li>Missing: ${p(u.toLowerCase())}</li>`).join("")}</ul></details>`:""}</th>
+              <td class="px-5 py-4">${Va(o,`${r.name} completeness`)}</td><td class="px-5 py-4">${Et(s)}</td><td class="px-5 py-4">${Et(l,"AI-ready","Incomplete")}</td>
+              <td class="px-5 py-4 text-[14px] text-ink-muted">Demo calendar</td>
+              <td class="px-5 py-4 text-[14px]">${F(r.lastUpdated)}${d>60?`<span class="block text-[12px] text-brick">Not reviewed in ${d} days</span>`:""}</td></tr>`}).join("")}</tbody></table></div>
+        <p class="mt-4 max-w-[80ch] text-[13px] text-ink-muted">Completeness is an internal POC measure: the share of ${e.health[0]?.checks.length??17} structured-data checks each record passes. In production these checks would run automatically whenever a listing changes.</p>
+      </section></div>`)}}var Xa={"Property data":"Each apartment exists as one structured record, not just a web page.",Location:"Address, coordinates and transport links let search answer \u201Cnear X\u201D questions.",Accommodation:"Bedrooms, bathrooms and capacity as numbers, so requests like \u201Csleeps 4\u201D can be matched.",Amenities:"A consistent amenity vocabulary and suitability tags across both brands.",Content:"Descriptions, photography and indicative pricing for every listing.",Search:"Clean, readable URLs and local context for search engines.","Structured data":"Schema.org markup generated from the record, ready for crawlers."};async function _a(){let e=await fe(),t=f.all.find(s=>s.slug==="196-bishopsgate"),a=e.readinessScore,r=70,o=2*Math.PI*r;return{title:"AI & Search Readiness",html:jt("#/readiness",`<div class="page pt-10">
+      <h1 class="text-[40px] leading-tight sm:text-[48px]">AI &amp; Search Readiness</h1>
+      <p class="mt-2 max-w-[66ch] text-[17px] text-ink-soft">Whether each kind of property information is structured well enough for modern search and AI-assisted experiences to read and understand.</p>
+      <section aria-labelledby="score" class="mt-10 grid gap-8 rounded-card border border-stone-line bg-paper p-6 sm:p-8 md:grid-cols-[auto_1fr] md:items-center">
+        <div class="relative mx-auto h-[172px] w-[172px]"><svg viewBox="0 0 172 172" class="h-full w-full" aria-hidden="true">
+          <circle cx="86" cy="86" r="${r}" fill="none" class="stroke-stone-deep" stroke-width="10"/>
+          <circle cx="86" cy="86" r="${r}" fill="none" class="stroke-door" stroke-width="10" stroke-linecap="round" stroke-dasharray="${a/100*o} ${o}" transform="rotate(-90 86 86)"/></svg>
+          <p class="absolute inset-0 flex items-center justify-center font-display text-[52px]">${a}%</p></div>
+        <div><h2 id="score" class="text-[30px] leading-tight">AI Readiness Score: ${a}%</h2>
+          <p class="mt-3 inline-block rounded-plate border border-brass/40 bg-brass-soft px-3 py-1.5 text-[14px] font-medium text-brass-deep">POC illustrative score, not an external ranking or guarantee.</p>
+          <p class="mt-4 max-w-[62ch] text-[15px] leading-relaxed text-ink-soft">The average pass rate across seven groups of checks on the demo portfolio. Being well structured makes property information easier for search engines and AI systems to understand. Whether and how those systems show it depends on their own indexing and ranking, which no platform controls.</p></div>
+      </section>
+      <section aria-label="Readiness by category" class="mt-8 grid gap-4 md:grid-cols-2">${e.readiness.map(s=>`<article class="rounded-card border border-stone-line bg-paper p-6">
+        <div class="flex items-start justify-between gap-4"><div><h3 class="text-[24px]">${s.group}</h3><p class="mt-1 text-[14px] leading-relaxed text-ink-muted">${Xa[s.group]??""}</p></div>
+          <p class="${g("shrink-0 font-display text-[28px]",s.percent===100?"text-door":"text-brass-deep")}">${s.percent}%</p></div>
+        <ul class="mt-5 space-y-2.5 border-t border-stone-line pt-4">${s.items.map(l=>{let n=l.passed===l.total;return`<li class="flex items-center justify-between gap-3 text-[15px]"><span class="flex items-center gap-2.5">${c(n?"CircleCheck":"CircleAlert",g("h-5 w-5 shrink-0",n?"text-door":"text-brick"))}${p(l.label)}<span class="sr-only">${n?"complete":"incomplete"}</span></span>
+            <span class="${g("shrink-0 tabular-nums text-[14px]",n?"text-ink-muted":"text-brick")}">${l.passed} of ${l.total}</span></li>`}).join("")}</ul></article>`).join("")}</section>
+      ${t?`<section aria-labelledby="schema" class="mt-12 grid gap-8 lg:grid-cols-[0.8fr_1.2fr]"><div>
+        <h2 id="schema" class="text-[30px] leading-tight">What a crawler reads</h2>
+        <p class="mt-3 max-w-[48ch] text-[15px] leading-relaxed text-ink-soft">Every apartment page publishes schema.org markup generated from the same record the guest sees. Here is ${t.name}. Nothing is written by hand, so it can&rsquo;t drift out of date.</p>
+        <p class="mt-4 text-[13px] text-ink-muted">Structured data can help search engines understand a page. It does not guarantee rich results or AI citations.</p></div>
+        <pre tabindex="0" aria-label="Schema.org JSON-LD for ${t.name}" class="max-h-[440px] overflow-auto rounded-card bg-[#15191A] p-5 text-[12.5px] leading-relaxed text-[#E8E6E0]">${p(JSON.stringify({...pe(t),image:["https://www.golondonapartments.com/media/196-bishopsgate/1.jpg","\u2026"]},null,2))}</pre></section>`:""}
+    </div>`)}}var Ya=[{name:"What guests and staff see",tech:"Presentation layer",body:"Search, results, apartment pages, the concierge, comparison and the admin views. It shows data; it doesn\u2019t decide anything."},{name:"How we understand a request",tech:"Search & recommendation layer",body:"Reads a sentence like \u201C2 bedrooms near Liverpool Street for 4\u201D, turns it into structured criteria, then scores every apartment and explains why."},{name:"How the site asks for data",tech:"API / service layer",body:"getProperties, searchProperties, getPropertyById, getAvailability, getRecommendations. Today these read demo data; later they call a real API with no change to the pages."},{name:"What an apartment is",tech:"Property domain model",body:"One typed definition of an apartment: location, rooms, capacity, amenities, suitability, stay rules, content. Shared by both brands."},{name:"Where the facts live",tech:"Data layer",body:"Twelve demo apartments in the POC. In production: a database behind the property API, fed by the PMS and edited in the admin portal."}],Qa=[{title:"Audit and discovery",body:"Map existing property content, systems and bookings flow across both sites. Agree the data model."},{title:"Proof of concept",body:"This prototype: structured data, intelligent search, concierge, comparison and data-health views on demo content."},{title:"Pilot",body:"Load real listings for a subset of properties, connect read-only availability, measure enquiry quality."},{title:"Production platform",body:"Property API and database, admin portal, booking engine, PMS and CRM integrations."},{title:"Progressive migration",body:"Move pages and traffic across in stages, keeping existing URLs and search equity intact."}];async function Za(){return{title:"Future platform",html:`<section class="page py-12 sm:py-16">
+        <h1 class="max-w-[20ch] text-[40px] leading-[1.05] sm:text-[56px]">One property platform behind every experience</h1>
+        <p class="mt-5 max-w-[64ch] text-lg leading-relaxed text-ink-soft">The value isn&rsquo;t a new website on its own. It&rsquo;s describing every apartment once, in a structured way, so that the website, search, the concierge and future booking tools all draw on the same facts.</p></section>
+      <section class="border-y border-stone-line bg-stone"><div class="page py-16">${zt()}</div></section>
+      <section class="page py-20" aria-labelledby="layers"><h2 id="layers" class="text-[34px] leading-tight sm:text-[40px]">How this prototype is built</h2>
+        <p class="mt-3 max-w-[62ch] text-[17px] text-ink-soft">Five layers, each with one job. That separation is what lets the demo data be swapped for live systems later.</p>
+        <ul class="mt-10 divide-y divide-stone-line border-y border-stone-line">${Ya.map(e=>`<li class="grid gap-2 py-6 md:grid-cols-[1fr_1.6fr] md:gap-8"><div><p class="font-display text-[22px] leading-snug">${e.name}</p><p class="mt-1 text-[13px] text-ink-muted">${e.tech}</p></div><p class="text-[15px] leading-relaxed text-ink-soft">${e.body}</p></li>`).join("")}</ul></section>
+      <section class="bg-door text-white" aria-labelledby="roadmap"><div class="page py-20">
+        <h2 id="roadmap" class="text-[34px] leading-tight text-white sm:text-[40px]">From prototype to production</h2>
+        <p class="mt-3 max-w-[62ch] text-[17px] text-white/80">Technology choices for production, such as a Laravel API with PostgreSQL, would be confirmed during discovery rather than assumed up front.</p>
+        <ol class="mt-12 grid gap-8 md:grid-cols-5">${Qa.map((e,t)=>`<li class="${g("border-t-2 pt-5",t===1?"border-[#C9A46A]":"border-white/25")}"><span class="font-display text-[34px] leading-none text-[#EFE5D3]">${t+1}</span>
+          <p class="mt-3 font-medium text-white">${e.title}${t===1?'<span class="ml-2 rounded-plate bg-[#A9844C] px-1.5 py-0.5 text-[11px] text-white">You are here</span>':""}</p><p class="mt-2 text-[14px] leading-relaxed text-white/75">${e.body}</p></li>`).join("")}</ol>
+      </div></section>`}}function Vt(){return{title:"Not found",html:`<div class="page py-24"><h1 class="text-[40px]">We couldn&rsquo;t find that page</h1><p class="mt-3 text-lg text-ink-soft">The apartment may be a draft or no longer listed in the demo portfolio.</p><div class="mt-8 flex gap-3"><a href="#/apartments" class="${w()}">Browse all apartments</a><a href="#/" class="${w("secondary")}">Describe your stay</a></div></div>`}}var Ot=[["#/apartments","Apartments"],["#/locations","Locations"],[B("Apartment for a city break near theatres and museums"),"Experiences"],[B("Business stay with a workspace"),"Business stays"],["#/about","About"],["contact","Contact"]];function Ht(e,t,a,r){return e==="contact"?`<button type="button" data-act="scroll" data-target="contact" class="${a}">${t}</button>`:`<a href="${e}" class="${g(a,r&&"text-ink underline decoration-brass decoration-2 underline-offset-[10px]")}" ${r?'aria-current="page"':""}>${t}</a>`}function ee(e){C("#header").innerHTML=`<div class="page flex h-[72px] items-center gap-8">
+    <a href="#/" class="flex items-baseline gap-2" aria-label="Go Apartments home"><span class="font-display text-[26px] leading-none tracking-tight">Go</span><span class="font-serif text-[15px] italic text-ink-soft">Apartments</span><span class="hidden text-[12px] text-ink-muted xl:inline">London</span></a>
+    <nav aria-label="Main" class="hidden flex-1 lg:block"><ul class="flex gap-6 text-[15px] text-ink-soft">${Ot.map(([t,a])=>`<li>${Ht(t,a,"py-2 transition-colors hover:text-ink",t===`#${e}`)}</li>`).join("")}</ul></nav>
+    <div class="ml-auto flex items-center gap-2">
+      <button type="button" data-act="concierge-open" class="${w("ghost","sm","hidden sm:inline-flex")}">${c("Sparkles","h-4 w-4 text-brass")}AI Concierge</button>
+      <a href="#/" data-act="focus-search" class="${w("primary","sm","hidden sm:inline-flex")}">Find an apartment</a>
+      <button type="button" data-act="menu" class="rounded-control p-2 lg:hidden" aria-expanded="${f.menu}" aria-controls="mobile-nav" aria-label="${f.menu?"Close menu":"Open menu"}">${c(f.menu?"X":"Menu","h-6 w-6")}</button>
+    </div></div>
+    ${f.menu?`<nav id="mobile-nav" aria-label="Mobile" class="border-t border-stone-line bg-paper lg:hidden"><ul class="page flex flex-col py-3">
+      ${Ot.map(([t,a])=>`<li>${Ht(t,a,"block w-full py-3 text-left font-display text-2xl")}</li>`).join("")}
+      <li class="mt-3 flex gap-2 pb-2"><a href="#/" class="${w("primary","md","flex-1")}">Find an apartment</a><button type="button" data-act="concierge-open" class="${w("secondary","md","flex-1")}">${c("Sparkles","h-4 w-4 text-brass")}Concierge</button></li>
+    </ul></nav>`:""}`}function le(){let e=L().path,t=e==="/admin"||e==="/readiness",a=f.compare.map(re).filter(Boolean),r=a.length>0&&e!=="/compare"&&!t;C("#tray").innerHTML=r?`<div class="fixed inset-x-0 bottom-0 z-30 border-t border-stone-line bg-paper/95 backdrop-blur safe-bottom" role="region" aria-label="Apartments selected for comparison">
+      <div class="page flex flex-wrap items-center gap-3 py-3"><p class="text-sm text-ink-muted">Comparing ${a.length} of ${P}</p>
+        <ul class="flex flex-1 flex-wrap gap-2">${a.map(o=>`<li class="flex items-center gap-1 rounded-control bg-stone py-1 pl-3 pr-1 text-sm">${p(o.name)}<button type="button" data-act="compare" data-id="${o.id}" class="rounded p-1 hover:bg-stone-deep" aria-label="Remove ${p(o.name)}">${c("X","h-3.5 w-3.5")}</button></li>`).join("")}</ul>
+        <button type="button" data-act="compare-clear" class="text-sm text-ink-muted underline-offset-4 hover:underline">Clear</button>
+        ${a.length<2?`<span class="${w("primary","sm","pointer-events-none opacity-50")}" aria-disabled="true">Compare apartments</span>`:`<a href="#/compare" class="${w("primary","sm")}">Compare apartments</a>`}
+      </div></div>`:"",C("#launcher").innerHTML=f.concierge.open||t?"":`<button type="button" data-act="concierge-open" class="${g("fixed right-4 z-30 inline-flex items-center gap-2 rounded-full bg-door py-3 pl-4 pr-5 text-[15px] font-medium text-white shadow-panel transition-colors hover:bg-door-hover sm:right-6",r?"launch-high":"launch-low")}">${c("Sparkles","h-4 w-4 text-[#EFE5D3]")}Ask the concierge</button>`}var Ja=["Which apartment is best for a family of four near Hyde Park?","Something for a 10-night corporate stay","Which apartments are suitable for relocation?","A studio for a weekend city break"],er=/^(only|and|also|what about|how about|with|but|make it|actually|ideally|preferably)\b/i;async function pt(e){let t=e.trim(),a=f.concierge;if(!t||a.busy)return;a.busy=!0;let r=a.thread.at(-1),o=!!(r&&er.test(t)),s=o?`${r.result.criteria.rawQuery} ${t}`:t,l=await de(s,3);a.thread.push({id:Date.now(),question:t,refined:o,result:l}),a.busy=!1,ie(!0)}function ie(e=!1){let t=f.concierge,a=C("#concierge");if(!t.open){a.innerHTML="";return}let r=t.thread.map(s=>{let l=N(s.result.criteria);return`<li class="animate-rise"><p class="ml-auto w-fit max-w-[85%] rounded-card bg-stone px-4 py-2.5 text-[15px]">${p(s.question)}</p>
+      <div class="mt-5"><p class="font-serif text-[17px] leading-relaxed">${p(s.result.summary)}</p>
+      ${l.length?`<p class="mt-2 text-[13px] text-ink-muted">${s.refined?"Refined search: ":"Looking for: "}${p(l.map(n=>`${n.label.toLowerCase()} ${n.value}`).join(", "))}</p>`:""}
+      <ul class="mt-5 space-y-4">${s.result.recommendations.map((n,d)=>{let u=n.property;return`<li class="${g("overflow-hidden rounded-card border",d===0?"border-door/40":"border-stone-line")}">
+          <div class="flex gap-4 p-4">${A(u,0,"h-24 w-24 shrink-0 rounded-plate sm:h-28 sm:w-28",`${u.name} interior illustration`)}
+            <div class="min-w-0 flex-1">${d===0?'<p class="mb-1 text-[12px] font-medium text-door">Best match</p>':""}
+              <h3 class="font-display text-xl leading-snug">${p(u.name)}</h3>
+              <div class="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-[13px] text-ink-muted"><span class="inline-flex items-center gap-1">${c("MapPin","h-3.5 w-3.5")}${p(u.location)}</span><span class="inline-flex items-center gap-1">${c("BedDouble","h-3.5 w-3.5")}${D(u.bedrooms)}</span><span class="inline-flex items-center gap-1">${c("Users","h-3.5 w-3.5")}Sleeps ${u.sleeps}</span></div>
+              <div class="mt-2">${Wt(n.matchScore,"sm")}</div></div></div>
+          <div class="border-t border-stone-line bg-stone/60 px-4 py-3">
+            <ul class="space-y-1 text-[14px] text-ink-soft">${n.reasons.slice(0,3).map(h=>`<li class="flex gap-2"><span aria-hidden="true" class="text-door">\u2713</span>${p(h)}</li>`).join("")}${n.cautions.slice(0,1).map(h=>`<li class="flex gap-2 text-brick"><span aria-hidden="true">!</span>${p(h)}</li>`).join("")}</ul>
+            <div class="mt-3 flex flex-wrap items-center gap-3"><a href="${$(u)}" data-act="concierge-close-nav" class="${w("primary","sm")}">View apartment</a><span class="text-[13px] text-ink-muted">Min. stay ${u.minimumStay} nights</span></div>
+          </div></li>`}).join("")}</ul>
+      <a href="${B(s.result.criteria.rawQuery)}" data-act="concierge-close-nav" class="mt-4 inline-block text-sm text-door underline underline-offset-4">See all matching apartments</a></div></li>`}).join("");if(a.innerHTML=`<div class="fixed inset-0 z-50 flex justify-end" role="dialog" aria-modal="true" aria-labelledby="concierge-title">
+    <button type="button" aria-label="Close concierge" data-act="concierge-close" class="absolute inset-0 bg-black/40"></button>
+    <section class="relative flex h-full w-full max-w-[520px] flex-col bg-paper shadow-panel animate-slidein safe-y">
+      <header class="flex items-start justify-between gap-4 border-b border-stone-line px-6 pb-5 pt-6"><div>
+        <h2 id="concierge-title" class="text-[26px] leading-tight">Go Apartments Concierge</h2>
+        <p class="mt-1.5 text-sm text-ink-muted">Describe your stay. Suggestions come straight from our apartment details.</p>
+        ${I("Simulated recommendations","mt-3")}</div>
+        <button type="button" data-act="concierge-close" class="rounded-control p-2 hover:bg-stone" aria-label="Close concierge">${c("X","h-5 w-5")}</button></header>
+      <div id="c-scroll" class="flex-1 overflow-y-auto px-6 py-6" aria-live="polite">
+        ${t.thread.length?"":`<p class="font-serif text-lg leading-relaxed text-ink-soft">Good to meet you. Tell me who&rsquo;s travelling, where you need to be and for how long, and I&rsquo;ll suggest apartments that fit.</p>
+          <p class="mt-6 text-sm font-medium text-ink">Try asking</p>
+          <ul class="mt-3 space-y-2">${Ja.map(s=>`<li><button type="button" data-act="concierge-ask" data-q="${p(s)}" class="w-full rounded-control border border-stone-line px-4 py-3 text-left text-[15px] text-ink-soft transition-colors hover:border-door hover:text-door">${p(s)}</button></li>`).join("")}</ul>`}
+        <ol class="space-y-10">${r}</ol>
+      </div>
+      <form data-form="concierge" class="border-t border-stone-line p-4">
+        <label for="concierge-input" class="sr-only">Ask the concierge</label>
+        <div class="flex items-end gap-2 rounded-card border border-ink/20 p-2 focus-within:border-door">
+          <textarea id="concierge-input" rows="2" placeholder="${t.thread.length?"Refine it, e.g. &quot;only with 3 bedrooms&quot;":"e.g. 2 bedrooms near Liverpool Street for 4 people"}" class="max-h-32 flex-1 resize-none bg-transparent px-2 py-1.5 text-[15px] text-ink outline-none placeholder:text-ink-muted/70"></textarea>
+          <button type="submit" class="${w("primary","sm","h-10 w-10 px-0")}" aria-label="Ask">${c("ArrowUp","h-4 w-4")}</button></div>
+        <p class="mt-2 text-[12px] text-ink-muted">POC recommendations use demo matching logic on demo property data.</p>
+      </form></section></div>`,C("#concierge-input")?.focus({preventScroll:!0}),e){let s=C("#c-scroll"),l=s.querySelector("ol > li:last-child");l&&(s.scrollTop=l.offsetTop-16)}}function tr(e){f.concierge.open=!0,f.lastFocus=document.activeElement,ie(),le(),e&&pt(e)}function Nt(){f.concierge.open=!1,ie(),le(),f.lastFocus?.focus?.()}function M(){let e=C("#overlay");if(f.lightbox){let t=f.all.find(o=>o.slug===f.lightbox.slug),a=f.lightbox.i,r=t.images.length;e.innerHTML=`<div class="fixed inset-0 z-50 flex flex-col bg-[#101314]/95 safe-y" role="dialog" aria-modal="true" aria-label="${p(t.name)} image gallery">
+      <div class="flex items-center justify-between p-4 text-white/85"><p class="text-sm">${a+1} / ${r}&nbsp;&nbsp;${J[a]??""}</p>
+        <button type="button" data-act="lb-close" class="rounded-control p-2 hover:bg-white/10" aria-label="Close gallery">${c("X","h-6 w-6")}</button></div>
+      <div class="relative flex flex-1 items-center justify-center px-4 pb-6">${A(t,a,"max-h-full max-w-full rounded-card object-contain",`${t.name}: ${J[a]} (illustration)`)}
+        ${r>1?`<button type="button" data-act="lb-step" data-d="-1" class="absolute left-4 rounded-full bg-white/90 p-3 text-[#1A1D1F] hover:bg-white" aria-label="Previous image">${c("ChevronLeft","h-5 w-5")}</button>
+        <button type="button" data-act="lb-step" data-d="1" class="absolute right-4 rounded-full bg-white/90 p-3 text-[#1A1D1F] hover:bg-white" aria-label="Next image">${c("ChevronRight","h-5 w-5")}</button>`:""}</div></div>`,e.querySelector('[data-act="lb-close"]').focus();return}if(f.modal){let{p:t,A:a}=f.modal;e.innerHTML=`<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4" role="dialog" aria-modal="true" aria-labelledby="req-title">
+      <div class="w-full max-w-md rounded-card bg-paper p-6 shadow-panel animate-rise">
+        <div class="flex items-start justify-between">${c("CircleCheck","h-8 w-8 text-door")}<button type="button" data-act="modal-close" class="rounded-control p-1.5 hover:bg-stone" aria-label="Close">${c("X","h-5 w-5")}</button></div>
+        <h3 id="req-title" class="mt-3 text-2xl">Booking request prepared</h3>
+        <p class="mt-2 text-[15px] text-ink-soft">${p(t.name)}, ${F(a.checkIn,{day:"numeric",month:"short"})} to ${F(a.checkOut)}, ${a.guests} guest${a.guests>1?"s":""}.</p>
+        <div class="mt-4 rounded-control border border-brass/40 bg-brass-soft p-3 text-[14px] text-brass-deep">This is a POC demo. No reservation has been made and nothing has been sent. In production, this request would go to the booking engine or reservations team.</div>
+        <button type="button" data-act="modal-close" class="${w("primary","md","mt-5 w-full")}">Done</button></div></div>`,e.querySelector('[data-act="modal-close"]').focus();return}e.innerHTML=""}function L(){let e=location.hash.slice(1)||"/",[t,a]=e.split("?");return{path:t||"/",params:new URLSearchParams(a||"")}}async function ut(){let{path:e,params:t}=L();f.menu=!1,f.lightbox=null,f.modal=null,M(),e.startsWith("/apartment/")||document.getElementById("jsonld")?.remove();let a;e==="/"?a=await Ba():e==="/search"?a=await qa(t):e==="/apartments"?a=await Ea(t):e.startsWith("/apartment/")?a=await Ha(decodeURIComponent(e.slice(11))):e==="/compare"?a=await za():e==="/locations"?a=await Ga():e==="/about"?a=await ja():e==="/admin"?a=await Ka():e==="/readiness"?a=await _a():e==="/platform"?a=await Za():a=Vt(),document.title=`${a.title} | Go Apartments (POC)`,ee(e);let r=C("#view");r.innerHTML=a.html,le();let o=t.get("at");o?requestAnimationFrame(()=>document.getElementById(o)?.scrollIntoView({block:"start"})):window.scrollTo(0,0),r.focus({preventScroll:!0})}function It(){if(ka(),L().path==="/compare"){let e=scrollY;ut().then(()=>scrollTo(0,e));return}document.querySelectorAll('button[data-act="compare"][aria-pressed]').forEach(e=>{let t=re(e.dataset.id);if(!t)return;let a=document.activeElement===e;e.outerHTML=oe(t),a&&document.querySelector(`button[data-act="compare"][data-id="${t.id}"][aria-pressed]`)?.focus()}),le()}document.addEventListener("click",e=>{let t=e.target.closest("[data-act]");if(!t)return;let a=t.dataset.act,r=C("#avail")?.dataset.slug,o=r?f.all.find(n=>n.slug===r):null,s=o?f.avail[o.id]:null,l=()=>{C("#avail").innerHTML=Gt(o)};switch(a){case"compare":{let n=t.dataset.id;f.compare=f.compare.includes(n)?f.compare.filter(d=>d!==n):f.compare.length>=P?f.compare:[...f.compare,n],It();break}case"compare-clear":f.compare=[],It();break;case"menu":f.menu=!f.menu,ee(L().path);break;case"scroll":e.preventDefault(),f.menu=!1,ee(L().path),document.getElementById(t.dataset.target)?.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});break;case"focus-search":L().path==="/"&&(e.preventDefault(),window.scrollTo(0,0),C("#view input[name=q]")?.focus());break;case"concierge-open":f.menu=!1,ee(L().path),tr(t.dataset.q);break;case"concierge-close":Nt();break;case"concierge-close-nav":f.concierge.open=!1,ie();break;case"concierge-ask":pt(t.dataset.q);break;case"lightbox":f.lastFocus=t,f.lightbox={slug:t.dataset.slug,i:Number(t.dataset.i)},M();break;case"lb-step":{let n=f.all.find(d=>d.slug===f.lightbox.slug).images.length;f.lightbox.i=(f.lightbox.i+Number(t.dataset.d)+n)%n,M();break}case"lb-close":f.lightbox=null,M(),f.lastFocus?.focus?.();break;case"modal-close":f.modal=null,M();break;case"cal-prev":s.month=Math.max(0,s.month-1),l();break;case"cal-next":s.month=Math.min(3,s.month+1),l();break;case"guests":s.guests=Math.max(1,Math.min(o.sleeps,s.guests+Number(t.dataset.d))),l();break;case"cal-day":{let n=t.dataset.date;s.error=null;let d=s.days.find(u=>u.date===n)?.status;!s.checkIn||s.checkOut||n<=s.checkIn?d==="available"&&(s.checkIn=n,s.checkOut=null):Ft(s.days,s.checkIn,n)?s.checkOut=n:s.error="Some nights in that range are already booked. Choose different dates.",l(),C(`#avail [data-date="${n}"]`)?.focus();break}case"request":f.modal={p:o,A:s},M();break}});document.addEventListener("submit",e=>{let t=e.target;if(t.dataset.form==="search"){e.preventDefault();let a=t.q.value.trim();a&&(location.hash=B(a).slice(1))}else if(t.dataset.form==="concierge"){e.preventDefault();let a=t.querySelector("textarea");pt(a.value),a.value=""}});document.addEventListener("input",e=>{let t=e.target;t.dataset?.live&&(document.getElementById(t.dataset.live).innerHTML=Ut(t.value,t.dataset.hero==="1"))});document.addEventListener("keydown",e=>{if(e.target.id==="concierge-input"&&e.key==="Enter"&&!e.shiftKey){e.preventDefault(),e.target.form.requestSubmit();return}if(e.key==="Escape"&&(f.lightbox?(f.lightbox=null,M(),f.lastFocus?.focus?.()):f.modal?(f.modal=null,M()):f.concierge.open&&Nt()),f.lightbox&&(e.key==="ArrowRight"||e.key==="ArrowLeft")){let t=f.all.find(a=>a.slug===f.lightbox.slug).images.length;f.lightbox.i=(f.lightbox.i+(e.key==="ArrowRight"?1:-1)+t)%t,M()}});window.addEventListener("hashchange",ut);(async function(){f.all=await R(),f.compare=f.compare.filter(t=>re(t)),await ut()})();})();
+/*! Bundled license information:
+
+lucide/dist/esm/defaultAttributes.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/air-vent.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/arrow-up-down.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/arrow-up.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/baby.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/bath.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/bed-double.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/briefcase.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/building-2.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/building.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/calendar-clock.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/calendar-days.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/calendar-range.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/car-front.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/check.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/chef-hat.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/chevron-left.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/chevron-right.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/circle-alert.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/circle-check.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/clock.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/database.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/dumbbell.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/expand.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/globe.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/headphones.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/house.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/key-round.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/landmark.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/laptop.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/layout-dashboard.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/map-pin.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/maximize.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/menu.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/message-square-text.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/minus.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/plug.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/plus.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/search.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/shirt.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/sparkle.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/sparkles.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/star.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/sun.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/train-front.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/trees.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/tv.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/users.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/utensils-crossed.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/washing-machine.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/wifi.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/x.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/lucide.js:
+  (**
+   * @license lucide v0.446.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+*/
+</script>
+</body>
+</html>
